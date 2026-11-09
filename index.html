@@ -19,12 +19,14 @@ html,body{margin:0;height:100%;background:#1B201B;overflow:hidden}
 #sp svg{width:150px}
 #sp i{width:38px;height:38px;border-radius:50%;border:3px solid #2f3a32;border-top-color:#488F38;animation:r 0.9s linear infinite}
 @keyframes r{to{transform:rotate(360deg)}}
+#nb{display:none;position:fixed;left:12px;bottom:12px;z-index:6;background:#488F38;color:#fff;border:0;border-radius:22px;padding:10px 16px;font:600 14px Arial,sans-serif;box-shadow:0 2px 10px rgba(0,0,0,.35);cursor:pointer}
 #off{display:none;position:fixed;left:50%;bottom:18px;transform:translateX(-50%);background:#B5462A;color:#fff;padding:9px 14px;border-radius:10px;font:600 14px Arial,sans-serif;z-index:5}
 </style>
 </head>
 <body>
 <div id="sp"><svg viewBox="0 0 112 44"><polygon points="12,3 40,3 32,41 4,41" fill="#488F38"/><polygon points="46,3 74,3 66,41 38,41" fill="#fff"/><polygon points="80,3 108,3 100,41 72,41" fill="#488F38"/><g font-family="Arial,Helvetica,sans-serif" font-size="28" font-weight="700" text-anchor="middle"><text x="22" y="32" fill="#fff">H</text><text x="56" y="32" fill="#1B201B">S</text><text x="90" y="32" fill="#fff">T</text></g></svg><span id="spt">LIVE YARD</span><i></i></div>
 <iframe id="f" title="HST Live Yard" credentialless allow="clipboard-write; geolocation"></iframe>
+<button id="nb" type="button">🔔 Turn on alerts</button>
 <div id="off">No internet – showing when back online</div>
 <script>
 (function(){
@@ -37,13 +39,37 @@ html,body{margin:0;height:100%;background:#1B201B;overflow:hidden}
   f.addEventListener('load',function(){setTimeout(function(){sp.style.opacity=0;setTimeout(function(){sp.style.display='none'},400)},900)});
   window.addEventListener('message',function(e){var h='';try{h=new URL(e.origin).hostname}catch(x){}if(!/\.googleusercontent\.com$/.test(h))return;var d=e.data||{};
     try{if(d.hst==='pin-save'&&d.pin)localStorage.setItem('hstpin',String(d.pin));if(d.hst==='pin-clear')localStorage.removeItem('hstpin');
+    if(d.hst==='need-token'){window.__src=e.source;window.__ori=e.origin;if(window.__sendTok)window.__sendTok()}
     if(d.hst==='need-pin'){var p=localStorage.getItem('hstpin');if(p&&e.source)e.source.postMessage({hst:'pin',pin:p},e.origin)}}catch(x){}});
   f.src=EX+(ws?'?p=ws':'');
   var off=document.getElementById('off');
   window.addEventListener('offline',function(){off.style.display='block'});
   window.addEventListener('online',function(){off.style.display='none';f.src=f.src});
-  if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');
 })();
+</script>
+<script type="module">
+import {initializeApp} from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
+import {getMessaging,getToken,onMessage,isSupported} from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging.js';
+const nb=document.getElementById('nb');let tok=null,reg=null;
+window.__sendTok=function(){try{if(tok&&window.__src)window.__src.postMessage({hst:'push-token',token:tok},window.__ori)}catch(e){}};
+async function start(ask){
+  try{
+    if(!('serviceWorker' in navigator))return;
+    reg=reg||await navigator.serviceWorker.register('sw.js');
+    if(!('Notification' in window)||!(await isSupported()))return;
+    let p=Notification.permission;
+    if(p==='default'){if(!ask){nb.style.display='block';return}p=await Notification.requestPermission()}
+    nb.style.display='none';if(p!=='granted')return;
+    await navigator.serviceWorker.ready;
+    const app=initializeApp(CFG);const m=getMessaging(app);
+    tok=await getToken(m,{vapidKey:VK,serviceWorkerRegistration:reg});
+    onMessage(m,()=>{});   // app open: the page shows its own alert
+    window.__sendTok();
+  }catch(e){console.log('push',e)}
+}
+const CFG={"apiKey":"AIzaSyB4S6ps5qJofmnjdjr1sYevf-BKMnY9OLc","authDomain":"hst-live-yard.firebaseapp.com","projectId":"hst-live-yard","storageBucket":"hst-live-yard.firebasestorage.app","messagingSenderId":"229728292239","appId":"1:229728292239:web:d3f39b7cef6a8820738ffa"},VK='BLC6mWYhhpEQYvMzPtZOG52lAUWjC0E6L8fuXmyffYm5pO_QwyPb06r1xoBSBIL8Ot-fOwmSB8bQIBp5Lt88cw4';
+nb.addEventListener('click',()=>start(true));
+start(false);
 </script>
 </body>
 </html>
