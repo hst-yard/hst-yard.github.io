@@ -15,7 +15,7 @@
 <style>
 html,body{margin:0;height:100%;background:#1B201B;overflow:hidden}
 #f{position:fixed;left:0;right:0;bottom:0;width:100%;border:0;background:#F2F4F0}
-#sp{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;background:#1B201B;color:#9FC79A;font:600 15px Arial,Helvetica,sans-serif;letter-spacing:.06em;transition:opacity .35s}
+#sp{position:fixed;inset:0;z-index:4;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;background:#1B201B;color:#9FC79A;font:600 15px Arial,Helvetica,sans-serif;letter-spacing:.06em;transition:opacity .35s}
 #sp svg{width:150px}
 #sp i{width:38px;height:38px;border-radius:50%;border:3px solid #2f3a32;border-top-color:#067327;animation:r 0.9s linear infinite}
 @keyframes r{to{transform:rotate(360deg)}}
@@ -30,10 +30,13 @@ html,body{margin:0;height:100%;background:#1B201B;overflow:hidden}
 #hp div{background:#fff;color:#1B201B;width:100%;max-width:480px;border-radius:16px 16px 0 0;padding:16px 18px 22px;font:14px/1.5 Arial,sans-serif}
 #hp b.t{display:block;font-size:16px;margin-bottom:6px;color:#067327}#hp ol{margin:6px 0 12px;padding-left:20px}
 #hp button{width:100%;border:0;border-radius:10px;padding:11px;background:#067327;color:#fff;font:700 14px Arial,sans-serif}
+#snp{display:none;width:min(92vw,420px);background:#fff;color:#1B201B;border-radius:14px;padding:14px 16px;font:14px/1.45 Arial,sans-serif;letter-spacing:0;box-shadow:0 4px 18px rgba(0,0,0,.4)}
+#snp .st{display:flex;align-items:center;gap:7px;font-size:12.5px;color:#666;margin-bottom:8px}#snp .dot{width:10px;height:10px;border-radius:50%;background:#c62828;box-shadow:0 0 0 3px rgba(198,40,40,.18)}
+#snp .hd{font-size:20px;font-weight:700;color:#067327;margin-bottom:6px}#snp .fl{font-size:13.5px;padding:5px 0;border-top:1px solid #eee}
 </style>
 </head>
 <body>
-<div id="sp"><img src="logo-full-white.png?v=2" alt="HST" style="width:230px;max-width:70vw"><span id="spt">LIVE YARD</span><i></i></div>
+<div id="sp"><img src="logo-full-white.png?v=2" alt="HST" style="width:230px;max-width:70vw"><span id="spt">LIVE YARD</span><div id="snp"></div><i></i></div>
 <iframe id="f" title="HST Live Yard" credentialless allow="clipboard-write; geolocation"></iframe>
 <button id="nb" type="button">🔔 Turn on alerts</button>
 <div id="ib"><img src="icon-192.png?v=2" alt=""><span>Install the HST Live Yard app<small>Faster, full screen + alerts on your phone</small></span><button id="ibi" type="button">Install</button><button id="ibx" type="button" aria-label="Close">×</button></div>
@@ -47,17 +50,27 @@ html,body{margin:0;height:100%;background:#1B201B;overflow:hidden}
   var f=document.getElementById('f'), sp=document.getElementById('sp');
   var ib=document.getElementById('ib');function fit(){var t=ib.style.display==='flex'?ib.offsetHeight:0;f.style.top=t+'px';f.style.height=(window.innerHeight-t)+'px';}window.__fit=fit;
   window.addEventListener('resize',fit);fit();
-  f.addEventListener('load',function(){setTimeout(function(){sp.style.opacity=0;setTimeout(function(){sp.style.display='none'},400)},900)});
+  function hideSp(){if(sp.style.display==='none')return;sp.style.opacity=0;setTimeout(function(){sp.style.display='none'},400)}
+  var SN=null;try{SN=JSON.parse(localStorage.getItem('hstSnap')||'null')}catch(x){}
+  var waitLive=!ws&&SN&&SN.head&&localStorage.getItem('hstpin');
+  if(waitLive){var e1=function(t){return String(t).replace(/[&<>]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c]})};
+    var dt=new Date(SN.at),hm=('0'+dt.getHours()).slice(-2)+':'+('0'+dt.getMinutes()).slice(-2),dy=(new Date().toDateString()===dt.toDateString())?'today':dt.toLocaleDateString();
+    var c=document.getElementById('snp');c.innerHTML='<div class="st"><span class="dot"></span><span id="snpS">'+(navigator.onLine?'Connecting…':'Offline')+' · last update '+dy+' '+hm+'</span></div><div class="hd">'+e1(SN.head)+'</div>'+(SN.fleets||[]).map(function(x){return '<div class="fl">'+e1(x)+'</div>'}).join('');
+    c.style.display='block';sp.querySelector('i').style.display='none';sp.querySelector('img').style.width='150px';
+    setTimeout(hideSp,25000);}
+  window.__goLive=hideSp;
+  f.addEventListener('load',function(){if(!waitLive)setTimeout(hideSp,900)});
   window.addEventListener('message',function(e){var h='';try{h=new URL(e.origin).hostname}catch(x){}if(!/\.googleusercontent\.com$/.test(h))return;var d=e.data||{};
     try{if(d.hst==='pin-save'&&d.pin)localStorage.setItem('hstpin',String(d.pin));if(d.hst==='pin-clear')localStorage.removeItem('hstpin');
     if(d.hst==='kv-set'&&d.k)localStorage.setItem('kv_'+d.k,String(d.v));
     if(d.hst==='kv-get'&&d.k&&e.source)e.source.postMessage({hst:'kv',k:d.k,v:localStorage.getItem('kv_'+d.k)},e.origin);
     if(d.hst==='need-token'){window.__src=e.source;window.__ori=e.origin;if(window.__sendTok)window.__sendTok()}
     if(d.hst==='reload'){location.reload();return}
+    if(d.hst==='snap'&&d.s){localStorage.setItem('hstSnap',JSON.stringify(d.s));if(window.__goLive)window.__goLive()}
     if(d.hst==='need-pin'){var p=localStorage.getItem('hstpin');if(p&&e.source)e.source.postMessage({hst:'pin',pin:p},e.origin)}}catch(x){}});
   f.src=EX+(ws?'?p=ws':'');
   var off=document.getElementById('off');
-  window.addEventListener('offline',function(){off.style.display='block'});
+  window.addEventListener('offline',function(){off.style.display='block';var x=document.getElementById('snpS');if(x)x.textContent=x.textContent.replace('Connecting…','Offline')});
   window.addEventListener('online',function(){off.style.display='none';f.src=f.src});
 })();
 </script>
