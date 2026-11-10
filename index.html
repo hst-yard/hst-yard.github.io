@@ -7,7 +7,7 @@
 <meta name="theme-color" content="#1B201B">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
-<meta name="apple-mobile-web-app-title" content="HST Yard">
+<meta name="apple-mobile-web-app-title" content="HST Live Yard">
 <meta name="robots" content="noindex, nofollow">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" type="image/png" href="favicon-32.png?v=2">
@@ -65,7 +65,7 @@ async function start(ask){
     await navigator.serviceWorker.ready;
     const app=initializeApp(CFG);const m=getMessaging(app);
     tok=await getToken(m,{vapidKey:VK,serviceWorkerRegistration:reg});
-    onMessage(m,p=>{try{const n=(p&&p.notification)||{},w=(p&&p.data)||{};reg.showNotification(n.title||w.title||'HST Yard',{body:n.body||w.body||'',badge:'badge-96.png',tag:w.tag||n.tag||('m'+Date.now()),renotify:true,vibrate:[300,100,300,100,300]})}catch(e){}});   // app open: still show the phone alert
+    onMessage(m,p=>{try{const n=(p&&p.notification)||{},w=(p&&p.data)||{};reg.showNotification(n.title||w.title||'HST Live Yard',{body:n.body||w.body||'',icon:'blank-96.png',badge:'badge-96.png',tag:w.tag||n.tag||('m'+Date.now()),renotify:true,vibrate:[300,100,300,100,300]})}catch(e){}});   // app open: still show the phone alert
     window.__sendTok();
   }catch(e){console.log('push',e)}
 }
