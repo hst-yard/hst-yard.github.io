@@ -89,7 +89,8 @@ window.__sendTok=function(){try{if(tok&&window.__src)window.__src.postMessage({h
 async function start(ask){
   try{
     if(!('serviceWorker' in navigator))return;
-    reg=reg||await navigator.serviceWorker.register('sw.js');
+    reg=reg||await navigator.serviceWorker.register('sw.js',{updateViaCache:'none'});
+    try{reg.update()}catch(e){}
     if(!('Notification' in window)||!(await isSupported()))return;
     let p=Notification.permission;
     if(p==='default'){if(!ask){nbShow('🔔 Turn on alerts');return}p=await Notification.requestPermission()}
@@ -109,6 +110,8 @@ function blockedHelp(){const sa=matchMedia('(display-mode: standalone)').matches
 nb.addEventListener('click',()=>{if('Notification' in window&&Notification.permission==='denied')blockedHelp();else start(true)});
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&'Notification' in window&&Notification.permission!=='granted')start(false)});
 
+if('serviceWorker' in navigator){let had=!!navigator.serviceWorker.controller,rl=false;navigator.serviceWorker.addEventListener('controllerchange',()=>{if(had&&!rl){rl=true;location.reload()}had=true});
+ document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&reg)try{reg.update()}catch(e){}});setInterval(()=>{if(reg)try{reg.update()}catch(e){}},30*60*1000)}
 start(false);
 </script>
 </body>
