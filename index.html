@@ -53,6 +53,7 @@ html,body{margin:0;height:100%;background:#1B201B;overflow:hidden}
     if(d.hst==='kv-set'&&d.k)localStorage.setItem('kv_'+d.k,String(d.v));
     if(d.hst==='kv-get'&&d.k&&e.source)e.source.postMessage({hst:'kv',k:d.k,v:localStorage.getItem('kv_'+d.k)},e.origin);
     if(d.hst==='need-token'){window.__src=e.source;window.__ori=e.origin;if(window.__sendTok)window.__sendTok()}
+    if(d.hst==='reload'){location.reload();return}
     if(d.hst==='need-pin'){var p=localStorage.getItem('hstpin');if(p&&e.source)e.source.postMessage({hst:'pin',pin:p},e.origin)}}catch(x){}});
   f.src=EX+(ws?'?p=ws':'');
   var off=document.getElementById('off');
