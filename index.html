@@ -65,7 +65,7 @@ async function start(ask){
     await navigator.serviceWorker.ready;
     const app=initializeApp(CFG);const m=getMessaging(app);
     tok=await getToken(m,{vapidKey:VK,serviceWorkerRegistration:reg});
-    onMessage(m,p=>{try{const n=(p&&p.notification)||{},w=(p&&p.data)||{};reg.showNotification(n.title||w.title||'HST Live Yard',{body:n.body||w.body||'',icon:'blank-96.png',badge:'badge-96.png',tag:w.tag||n.tag||('m'+Date.now()),renotify:true,vibrate:[300,100,300,100,300]})}catch(e){}});   // app open: still show the phone alert
+    onMessage(m,p=>{try{const n=(p&&p.notification)||{},w=(p&&p.data)||{};reg.showNotification(n.title||w.title||'HST Live Yard',{body:n.body||w.body||'',icon:'icon-192.png?v=2',badge:'badge-96.png',tag:w.tag||n.tag||('m'+Date.now()),renotify:true,vibrate:[300,100,300,100,300]})}catch(e){}});   // app open: still show the phone alert
     window.__sendTok();
   }catch(e){console.log('push',e)}
 }
