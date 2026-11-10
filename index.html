@@ -21,12 +21,23 @@ html,body{margin:0;height:100%;background:#1B201B;overflow:hidden}
 @keyframes r{to{transform:rotate(360deg)}}
 #nb{display:none;position:fixed;left:12px;bottom:12px;z-index:6;background:#067327;color:#fff;border:0;border-radius:22px;padding:10px 16px;font:600 14px Arial,sans-serif;box-shadow:0 2px 10px rgba(0,0,0,.35);cursor:pointer}
 #off{display:none;position:fixed;left:50%;bottom:18px;transform:translateX(-50%);background:#B5462A;color:#fff;padding:9px 14px;border-radius:10px;font:600 14px Arial,sans-serif;z-index:5}
+#ib{display:none;position:fixed;top:0;left:0;right:0;z-index:7;background:#067327;color:#fff;font:600 14px Arial,sans-serif;padding:8px 10px;align-items:center;gap:8px;box-shadow:0 2px 8px rgba(0,0,0,.3)}
+#ib img{width:30px;height:30px;border-radius:7px;background:#fff}
+#ib span{flex:1;line-height:1.25}#ib small{display:block;font-weight:400;font-size:12px;opacity:.9}
+#ib button{border:0;border-radius:16px;padding:7px 13px;font:700 13px Arial,sans-serif;cursor:pointer}
+#ibi{background:#fff;color:#067327}#ibx{background:transparent;color:#fff;font-size:18px!important;padding:4px 8px!important}
+#hp{display:none;position:fixed;inset:0;z-index:9;background:rgba(0,0,0,.55);align-items:flex-end;justify-content:center}
+#hp div{background:#fff;color:#1B201B;width:100%;max-width:480px;border-radius:16px 16px 0 0;padding:16px 18px 22px;font:14px/1.5 Arial,sans-serif}
+#hp b.t{display:block;font-size:16px;margin-bottom:6px;color:#067327}#hp ol{margin:6px 0 12px;padding-left:20px}
+#hp button{width:100%;border:0;border-radius:10px;padding:11px;background:#067327;color:#fff;font:700 14px Arial,sans-serif}
 </style>
 </head>
 <body>
 <div id="sp"><img src="logo-full-white.png?v=2" alt="HST" style="width:230px;max-width:70vw"><span id="spt">LIVE YARD</span><i></i></div>
 <iframe id="f" title="HST Live Yard" credentialless allow="clipboard-write; geolocation"></iframe>
 <button id="nb" type="button">🔔 Turn on alerts</button>
+<div id="ib"><img src="icon-192.png?v=2" alt=""><span>Install the HST Live Yard app<small>Faster, full screen + alerts on your phone</small></span><button id="ibi" type="button">Install</button><button id="ibx" type="button" aria-label="Close">×</button></div>
+<div id="hp"><div><b class="t" id="hpt"></b><div id="hpb"></div><button type="button" id="hpc">OK</button></div></div>
 <div id="off">No internet – showing when back online</div>
 <script>
 (function(){
@@ -34,7 +45,7 @@ html,body{margin:0;height:100%;background:#1B201B;overflow:hidden}
   var ws=/[?&#]ws\b/.test(location.search+location.hash);
   if(ws){document.title='HST Workshop Desk';document.getElementById('spt').textContent='WORKSHOP DESK';}
   var f=document.getElementById('f'), sp=document.getElementById('sp');
-  function fit(){f.style.top='0px';f.style.height=window.innerHeight+'px';}
+  var ib=document.getElementById('ib');function fit(){var t=ib.style.display==='flex'?ib.offsetHeight:0;f.style.top=t+'px';f.style.height=(window.innerHeight-t)+'px';}window.__fit=fit;
   window.addEventListener('resize',fit);fit();
   f.addEventListener('load',function(){setTimeout(function(){sp.style.opacity=0;setTimeout(function(){sp.style.display='none'},400)},900)});
   window.addEventListener('message',function(e){var h='';try{h=new URL(e.origin).hostname}catch(x){}if(!/\.googleusercontent\.com$/.test(h))return;var d=e.data||{};
@@ -49,6 +60,27 @@ html,body{margin:0;height:100%;background:#1B201B;overflow:hidden}
   window.addEventListener('online',function(){off.style.display='none';f.src=f.src});
 })();
 </script>
+
+<script>
+(function(){
+  var ib=document.getElementById('ib'),hp=document.getElementById('hp'),dp=null;
+  var sa=(window.matchMedia&&matchMedia('(display-mode: standalone)').matches)||navigator.standalone===true||document.referrer.indexOf('android-app://')===0;
+  var ios=/iphone|ipad|ipod/i.test(navigator.userAgent);
+  window.__help=function(t,b){document.getElementById('hpt').textContent=t;document.getElementById('hpb').innerHTML=b;hp.style.display='flex'};
+  document.getElementById('hpc').onclick=function(){hp.style.display='none'};
+  function show(){if(sa)return;ib.style.display='flex';window.__fit&&window.__fit()}
+  function hide(){ib.style.display='none';window.__fit&&window.__fit()}
+  window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();dp=e;show()});
+  window.addEventListener('appinstalled',function(){sa=true;hide()});
+  document.getElementById('ibx').onclick=hide;   // hidden for this visit only – shows again next time
+  document.getElementById('ibi').onclick=function(){
+    if(dp){dp.prompt();dp.userChoice.then(function(c){if(c&&c.outcome==='accepted')hide();dp=null});return}
+    if(ios)window.__help('Install on iPhone','<ol><li>Open this page in <b>Safari</b></li><li>Tap the <b>Share</b> button (square with arrow)</li><li>Tap <b>Add to Home Screen</b> → <b>Add</b></li></ol>');
+    else window.__help('Install the app','<ol><li>Tap Chrome menu <b>⋮</b> (top right)</li><li>Tap <b>Install app</b> or <b>Add to Home screen</b></li><li>Tap <b>Install</b>, then open <b>HST Live Yard</b> from your home screen</li></ol>');
+  };
+  if(!sa)setTimeout(show,1500);
+})();
+</script>
 <script type="module">
 import {initializeApp} from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
 import {getMessaging,getToken,onMessage,isSupported} from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging.js';
@@ -60,8 +92,10 @@ async function start(ask){
     reg=reg||await navigator.serviceWorker.register('sw.js');
     if(!('Notification' in window)||!(await isSupported()))return;
     let p=Notification.permission;
-    if(p==='default'){if(!ask){nb.style.display='block';return}p=await Notification.requestPermission()}
-    nb.style.display='none';if(p!=='granted')return;
+    if(p==='default'){if(!ask){nbShow('🔔 Turn on alerts');return}p=await Notification.requestPermission()}
+    if(p==='denied'){nbShow('🔕 Alerts blocked – tap to fix');if(ask)blockedHelp();return}
+    if(p!=='granted'){nbShow('🔔 Turn on alerts');return}
+    nb.style.display='none';
     await navigator.serviceWorker.ready;
     const app=initializeApp(CFG);const m=getMessaging(app);
     tok=await getToken(m,{vapidKey:VK,serviceWorkerRegistration:reg});
@@ -70,7 +104,11 @@ async function start(ask){
   }catch(e){console.log('push',e)}
 }
 const CFG={"apiKey":"AIzaSyB4S6ps5qJofmnjdjr1sYevf-BKMnY9OLc","authDomain":"hst-live-yard.firebaseapp.com","projectId":"hst-live-yard","storageBucket":"hst-live-yard.firebasestorage.app","messagingSenderId":"229728292239","appId":"1:229728292239:web:d3f39b7cef6a8820738ffa"},VK='BLC6mWYhhpEQYvMzPtZOG52lAUWjC0E6L8fuXmyffYm5pO_QwyPb06r1xoBSBIL8Ot-fOwmSB8bQIBp5Lt88cw4';
-nb.addEventListener('click',()=>start(true));
+function nbShow(t){nb.textContent=t;nb.style.display='block'}
+function blockedHelp(){const sa=matchMedia('(display-mode: standalone)').matches;window.__help('Allow alerts',sa?'<ol><li>Long-press the <b>HST Live Yard</b> icon on your home screen</li><li>Tap <b>App info</b> (ⓘ) → <b>Notifications</b></li><li>Turn <b>Allow notifications</b> ON, then open the app again</li></ol>':'<ol><li>Tap the icon left of the address bar (🔒 / ⚙)</li><li>Tap <b>Permissions</b> or <b>Site settings</b> → <b>Notifications</b></li><li>Choose <b>Allow</b>, then reload the page</li></ol>')}
+nb.addEventListener('click',()=>{if('Notification' in window&&Notification.permission==='denied')blockedHelp();else start(true)});
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&'Notification' in window&&Notification.permission!=='granted')start(false)});
+
 start(false);
 </script>
 </body>
