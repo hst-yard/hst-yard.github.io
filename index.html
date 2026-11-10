@@ -10,21 +10,21 @@
 <meta name="apple-mobile-web-app-title" content="HST Yard">
 <meta name="robots" content="noindex, nofollow">
 <link rel="manifest" href="manifest.webmanifest">
-<link rel="icon" type="image/png" href="favicon-32.png">
-<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" href="favicon-32.png?v=2">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2">
 <style>
 html,body{margin:0;height:100%;background:#1B201B;overflow:hidden}
 #f{position:fixed;left:0;right:0;bottom:0;width:100%;border:0;background:#F2F4F0}
 #sp{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;background:#1B201B;color:#9FC79A;font:600 15px Arial,Helvetica,sans-serif;letter-spacing:.06em;transition:opacity .35s}
 #sp svg{width:150px}
-#sp i{width:38px;height:38px;border-radius:50%;border:3px solid #2f3a32;border-top-color:#488F38;animation:r 0.9s linear infinite}
+#sp i{width:38px;height:38px;border-radius:50%;border:3px solid #2f3a32;border-top-color:#067327;animation:r 0.9s linear infinite}
 @keyframes r{to{transform:rotate(360deg)}}
-#nb{display:none;position:fixed;left:12px;bottom:12px;z-index:6;background:#488F38;color:#fff;border:0;border-radius:22px;padding:10px 16px;font:600 14px Arial,sans-serif;box-shadow:0 2px 10px rgba(0,0,0,.35);cursor:pointer}
+#nb{display:none;position:fixed;left:12px;bottom:12px;z-index:6;background:#067327;color:#fff;border:0;border-radius:22px;padding:10px 16px;font:600 14px Arial,sans-serif;box-shadow:0 2px 10px rgba(0,0,0,.35);cursor:pointer}
 #off{display:none;position:fixed;left:50%;bottom:18px;transform:translateX(-50%);background:#B5462A;color:#fff;padding:9px 14px;border-radius:10px;font:600 14px Arial,sans-serif;z-index:5}
 </style>
 </head>
 <body>
-<div id="sp"><svg viewBox="0 0 112 44"><polygon points="12,3 40,3 32,41 4,41" fill="#488F38"/><polygon points="46,3 74,3 66,41 38,41" fill="#fff"/><polygon points="80,3 108,3 100,41 72,41" fill="#488F38"/><g font-family="Arial,Helvetica,sans-serif" font-size="28" font-weight="700" text-anchor="middle"><text x="22" y="32" fill="#fff">H</text><text x="56" y="32" fill="#1B201B">S</text><text x="90" y="32" fill="#fff">T</text></g></svg><span id="spt">LIVE YARD</span><i></i></div>
+<div id="sp"><img src="logo-full-white.png?v=2" alt="HST" style="width:230px;max-width:70vw"><span id="spt">LIVE YARD</span><i></i></div>
 <iframe id="f" title="HST Live Yard" credentialless allow="clipboard-write; geolocation"></iframe>
 <button id="nb" type="button">🔔 Turn on alerts</button>
 <div id="off">No internet – showing when back online</div>
@@ -65,7 +65,7 @@ async function start(ask){
     await navigator.serviceWorker.ready;
     const app=initializeApp(CFG);const m=getMessaging(app);
     tok=await getToken(m,{vapidKey:VK,serviceWorkerRegistration:reg});
-    onMessage(m,p=>{try{const n=(p&&p.notification)||{},w=(p&&p.data)||{};reg.showNotification(n.title||w.title||'HST Yard',{body:n.body||w.body||'',badge:'favicon-32.png',tag:w.tag||n.tag||('m'+Date.now()),renotify:true,vibrate:[300,100,300,100,300]})}catch(e){}});   // app open: still show the phone alert
+    onMessage(m,p=>{try{const n=(p&&p.notification)||{},w=(p&&p.data)||{};reg.showNotification(n.title||w.title||'HST Yard',{body:n.body||w.body||'',badge:'badge-96.png',tag:w.tag||n.tag||('m'+Date.now()),renotify:true,vibrate:[300,100,300,100,300]})}catch(e){}});   // app open: still show the phone alert
     window.__sendTok();
   }catch(e){console.log('push',e)}
 }
