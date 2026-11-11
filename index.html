@@ -30,13 +30,26 @@ html,body{margin:0;height:100%;background:#1B201B;overflow:hidden}
 #hp div{background:#fff;color:#1B201B;width:100%;max-width:480px;border-radius:16px 16px 0 0;padding:16px 18px 22px;font:14px/1.5 Arial,sans-serif}
 #hp b.t{display:block;font-size:16px;margin-bottom:6px;color:#067327}#hp ol{margin:6px 0 12px;padding-left:20px}
 #hp button{width:100%;border:0;border-radius:10px;padding:11px;background:#067327;color:#fff;font:700 14px Arial,sans-serif}
-#snp{display:none;width:min(92vw,420px);background:#fff;color:#1B201B;border-radius:14px;padding:14px 16px;font:14px/1.45 Arial,sans-serif;letter-spacing:0;box-shadow:0 4px 18px rgba(0,0,0,.4)}
-#snp .st{display:flex;align-items:center;gap:7px;font-size:12.5px;color:#666;margin-bottom:8px}#snp .dot{width:10px;height:10px;border-radius:50%;background:#c62828;box-shadow:0 0 0 3px rgba(198,40,40,.18)}
-#snp .hd{font-size:20px;font-weight:700;color:#067327;margin-bottom:6px}#snp .fl{font-size:13.5px;padding:5px 0;border-top:1px solid #eee}
+#snp{display:none;box-sizing:border-box;width:min(92vw,460px);background:#fff;color:#1B201B;border-radius:16px;padding:16px 18px 14px;font:14px/1.45 Arial,sans-serif;letter-spacing:0;box-shadow:0 8px 28px rgba(0,0,0,.45)}
+#snp .st{display:flex;align-items:center;gap:8px;font-size:12.5px;color:#666;margin-bottom:10px}
+#snp .dot{flex:0 0 auto;width:10px;height:10px;border-radius:50%;background:#c62828;box-shadow:0 0 0 3px rgba(198,40,40,.18);animation:pl 1.4s ease-in-out infinite}
+@keyframes pl{50%{opacity:.35}}
+#snp .hd{font-size:19px;font-weight:700;color:#1B201B;line-height:1.25;margin-bottom:10px}
+#snp .hd b{color:#067327}
+#snp .fl{display:grid;grid-template-columns:1fr auto;align-items:center;gap:2px 10px;padding:8px 0;border-top:1px solid #eef0ec}
+#snp .fl .n{font-weight:700;font-size:14px}
+#snp .fl .p{font-weight:800;font-size:13px;padding:2px 9px;border-radius:12px;background:#E6F0E2;color:#2E6224}
+#snp .fl .p.a{background:#FBF0DC;color:#9a5d00}#snp .fl .p.r{background:#F9E3E0;color:#B5462A}
+#snp .fl .d{grid-column:1/3;font-size:12px;color:#777}
+#snp .bar{height:3px;border-radius:3px;background:#eef0ec;margin-top:12px;overflow:hidden}
+#snp .bar i{display:block;height:100%;width:40%;background:#067327;border-radius:3px;animation:ld 1.2s ease-in-out infinite}
+@keyframes ld{0%{transform:translateX(-100%)}100%{transform:translateX(260%)}}
+#upd{display:none;font:600 14px Arial,sans-serif;color:#cfe3cb;letter-spacing:.02em}
+@media(min-width:900px){#snp{padding:20px 24px 16px}#snp .hd{font-size:22px}}
 </style>
 </head>
 <body>
-<div id="sp"><img src="logo-full-white.png?v=2" alt="HST" style="width:230px;max-width:70vw"><span id="spt">LIVE YARD</span><div id="snp"></div><i></i></div>
+<div id="sp"><img src="logo-full-white.png?v=2" alt="HST" style="width:230px;max-width:70vw"><span id="spt">LIVE YARD</span><span id="upd"></span><div id="snp"></div><i id="spi"></i></div>
 <iframe id="f" title="HST Live Yard" credentialless allow="clipboard-write; geolocation"></iframe>
 <button id="nb" type="button">🔔 Turn on alerts</button>
 <div id="ib"><img src="icon-192.png?v=2" alt=""><span>Install the HST Live Yard app<small>Faster, full screen + alerts on your phone</small></span><button id="ibi" type="button">Install</button><button id="ibx" type="button" aria-label="Close">×</button></div>
@@ -51,12 +64,16 @@ html,body{margin:0;height:100%;background:#1B201B;overflow:hidden}
   var ib=document.getElementById('ib');function fit(){var t=ib.style.display==='flex'?ib.offsetHeight:0;f.style.top=t+'px';f.style.height=(window.innerHeight-t)+'px';}window.__fit=fit;
   window.addEventListener('resize',fit);fit();
   function hideSp(){if(sp.style.display==='none')return;sp.style.opacity=0;setTimeout(function(){sp.style.display='none'},400)}
+  try{if(sessionStorage.getItem('hstUpd')){sessionStorage.removeItem('hstUpd');var u0=document.getElementById('upd');u0.textContent='✓ Updated – opening…';u0.style.display='block'}}catch(x){}
   var SN=null;try{SN=JSON.parse(localStorage.getItem('hstSnap')||'null')}catch(x){}
   var waitLive=!ws&&SN&&SN.head&&localStorage.getItem('hstpin');
   if(waitLive){var e1=function(t){return String(t).replace(/[&<>]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c]})};
     var dt=new Date(SN.at),hm=('0'+dt.getHours()).slice(-2)+':'+('0'+dt.getMinutes()).slice(-2),dy=(new Date().toDateString()===dt.toDateString())?'today':dt.toLocaleDateString();
-    var c=document.getElementById('snp');c.innerHTML='<div class="st"><span class="dot"></span><span id="snpS">'+(navigator.onLine?'Connecting…':'Offline')+' · last update '+dy+' '+hm+'</span></div><div class="hd">'+e1(SN.head)+'</div>'+(SN.fleets||[]).map(function(x){return '<div class="fl">'+e1(x)+'</div>'}).join('');
-    c.style.display='block';sp.querySelector('i').style.display='none';sp.querySelector('img').style.width='150px';
+    var c=document.getElementById('snp');
+    var fl=function(x){x=String(x);var m=x.match(/(\d+)\s*%/),pc=m?+m[1]:null,nm=x.split(/\s[·•]\s|\s\d+\s*%/)[0],rest=x.replace(nm,'').replace(/^\s*[·•]\s*/,'');var cl=pc==null?'':pc>=85?'':pc>=75?' a':' r';return '<div class="fl"><span class="n">'+e1(nm)+'</span>'+(pc!=null?'<span class="p'+cl+'">'+pc+'%</span>':'<span></span>')+'<span class="d">'+e1(rest.replace(/\d+\s*%\s*/,''))+'</span></div>'};
+    var hd=e1(SN.head).replace(/(\d+\s*%)/,'<b>$1</b>');
+    c.innerHTML='<div class="st"><span class="dot"></span><span id="snpS">'+(navigator.onLine?'Connecting…':'Offline')+' · last data '+dy+' '+hm+'</span></div><div class="hd">'+hd+'</div>'+(SN.fleets||[]).map(fl).join('')+'<div class="bar"><i></i></div>';
+    c.style.display='block';document.getElementById('spi').style.display='none';sp.querySelector('img').style.width='150px';
     setTimeout(hideSp,25000);}
   window.__goLive=hideSp;
   f.addEventListener('load',function(){if(!waitLive)setTimeout(hideSp,900)});
@@ -65,7 +82,7 @@ html,body{margin:0;height:100%;background:#1B201B;overflow:hidden}
     if(d.hst==='kv-set'&&d.k)localStorage.setItem('kv_'+d.k,String(d.v));
     if(d.hst==='kv-get'&&d.k&&e.source)e.source.postMessage({hst:'kv',k:d.k,v:localStorage.getItem('kv_'+d.k)},e.origin);
     if(d.hst==='need-token'){window.__src=e.source;window.__ori=e.origin;if(window.__sendTok)window.__sendTok()}
-    if(d.hst==='reload'){location.reload();return}
+    if(d.hst==='reload'){try{sessionStorage.setItem('hstUpd','1')}catch(x){}var u=document.getElementById('upd');u.textContent='Updating to the new version…';u.style.display='block';var c2=document.getElementById('snp');if(c2)c2.style.display='none';document.getElementById('spi').style.display='block';sp.style.display='flex';sp.style.opacity=0;requestAnimationFrame(function(){sp.style.opacity=1});setTimeout(function(){location.reload()},700);return}
     if(d.hst==='snap'&&d.s){localStorage.setItem('hstSnap',JSON.stringify(d.s));if(window.__goLive)window.__goLive()}
     if(d.hst==='need-pin'){var p=localStorage.getItem('hstpin');if(p&&e.source)e.source.postMessage({hst:'pin',pin:p},e.origin)}}catch(x){}});
   f.src=EX+(ws?'?p=ws':'');
