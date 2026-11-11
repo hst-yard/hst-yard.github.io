@@ -173,7 +173,7 @@ var t;draw();addEventListener('resize',function(){clearTimeout(t);t=setTimeout(d
   document.getElementById('hpc').onclick=function(){hp.style.display='none'};
   function show(){if(sa)return;ib.style.display='flex';window.__fit&&window.__fit()}
   function hide(){ib.style.display='none';window.__fit&&window.__fit()}
-  window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();dp=e;show()});
+  window.addEventListener('beforeinstallprompt',function(e){dp=e;hide()});   // Chrome/Edge/Samsung show their own Install button
   window.addEventListener('appinstalled',function(){sa=true;hide()});
   document.getElementById('ibx').onclick=hide;   // hidden for this visit only – shows again next time
   document.getElementById('ibi').onclick=function(){
@@ -186,7 +186,8 @@ var t;draw();addEventListener('resize',function(){clearTimeout(t);t=setTimeout(d
   };
   function waitDp(n){if(dp||n<=0)return Promise.resolve(dp);return new Promise(function(r){setTimeout(function(){r(waitDp(n-1))},200)})}
   if(navigator.getInstalledRelatedApps)navigator.getInstalledRelatedApps().then(function(l){if(l&&l.length){sa=true;hide()}}).catch(function(){});
-  if(!sa)setTimeout(function(){if(!sa)show()},1500);
+  var mob=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+  if(!sa&&mob)setTimeout(function(){if(!sa&&!dp)show()},ios?1500:5000);   // only phones where the browser gives no install button
 })();
 </script>
 <script type="module">
