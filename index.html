@@ -177,11 +177,14 @@ var t;draw();addEventListener('resize',function(){clearTimeout(t);t=setTimeout(d
   window.addEventListener('appinstalled',function(){sa=true;hide()});
   document.getElementById('ibx').onclick=hide;   // hidden for this visit only – shows again next time
   document.getElementById('ibi').onclick=function(){
+    if(!dp&&!ios&&!window.__w1){window.__w1=1;waitDp(10).then(function(){document.getElementById('ibi').onclick();window.__w1=0});return}
     if(dp){dp.prompt();dp.userChoice.then(function(c){if(c&&c.outcome==='accepted')hide();dp=null});return}
     if(ios)window.__help('Install on iPhone','<ol><li>Open this page in <b>Safari</b></li><li>Tap the <b>Share</b> button (square with arrow)</li><li>Tap <b>Add to Home Screen</b> → <b>Add</b></li></ol>');
     else window.__help('Install the app','<ol><li>Tap Chrome menu <b>⋮</b> (top right)</li><li>Tap <b>Install app</b> or <b>Add to Home screen</b></li><li>Tap <b>Install</b>, then open <b>HST Live Yard</b> from your home screen</li></ol>');
   };
-  if(!sa)setTimeout(show,1500);
+  function waitDp(n){if(dp||n<=0)return Promise.resolve(dp);return new Promise(function(r){setTimeout(function(){r(waitDp(n-1))},200)})}
+  if(navigator.getInstalledRelatedApps)navigator.getInstalledRelatedApps().then(function(l){if(l&&l.length){sa=true;hide()}}).catch(function(){});
+  if(!sa)setTimeout(function(){if(!sa)show()},1500);
 })();
 </script>
 <script type="module">
