@@ -67,7 +67,60 @@ html,body{margin:0;height:100%;background:#1B201B;overflow:hidden}
 </style>
 </head>
 <body>
-<div id="sp"><svg id="spbg" aria-hidden="true"><defs><pattern id="gr" width="34" height="34" patternUnits="userSpaceOnUse"><path d="M34 0H0V34" fill="none" stroke="#2e4a33" stroke-width=".6"/></pattern><radialGradient id="hg"><stop offset="0" stop-color="#5fbf72" stop-opacity=".28"/><stop offset="1" stop-color="#5fbf72" stop-opacity="0"/></radialGradient><radialGradient id="vg" cx="50%" cy="50%" r="70%"><stop offset=".35" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".55"/></radialGradient></defs><rect width="100%" height="100%" fill="url(#gr)" opacity=".55"/><g fill="none" stroke="#5fbf72" stroke-opacity=".14"><circle cx="50%" cy="50%" r="190"/><circle cx="50%" cy="50%" r="300"/><circle cx="50%" cy="50%" r="420" stroke-dasharray="2 8"/></g><g stroke="#5fbf72" stroke-width="1.4" stroke-opacity=".55"><line x1="15%" y1="27%" x2="50%" y2="50%" class="fl"/><line x1="85%" y1="27%" x2="50%" y2="50%" class="fl"/><line x1="15%" y1="75%" x2="50%" y2="50%" class="fl"/><line x1="85%" y1="75%" x2="50%" y2="50%" class="fl"/></g><svg x="15%" y="27%" overflow="visible"><circle r="40" fill="url(#hg)"/><circle r="27" fill="#0f1a12" stroke="#5fbf72" stroke-width="1.6"/><circle r="33" fill="none" stroke="#5fbf72" stroke-opacity=".35" stroke-dasharray="3 5"><animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="24s" repeatCount="indefinite"/></circle><g fill="none" stroke="#bfe6c4" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle r="9" stroke-width="5" stroke-dasharray="3.6 3.4"/><circle r="4"/></g><text y="-40" text-anchor="middle" fill="#9FC79A" fill-opacity=".85" font-family="Arial" font-size="9.5" font-weight="700" letter-spacing="2">WORKSHOP</text></svg><svg x="85%" y="27%" overflow="visible"><circle r="40" fill="url(#hg)"/><circle r="27" fill="#0f1a12" stroke="#5fbf72" stroke-width="1.6"/><circle r="33" fill="none" stroke="#5fbf72" stroke-opacity=".35" stroke-dasharray="3 5"><animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="24s" repeatCount="indefinite"/></circle><g fill="none" stroke="#bfe6c4" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M0 13C-6 6-9 1-9-3a9 9 0 0 1 18 0c0 4-3 9-9 16z"/><circle cy="-3" r="3"/><path d="M-15-9a17 17 0 0 1 5-8M15-9a17 17 0 0 0-5-8" stroke-opacity=".6"/></g><text y="-40" text-anchor="middle" fill="#9FC79A" fill-opacity=".85" font-family="Arial" font-size="9.5" font-weight="700" letter-spacing="2">GPS TRACKING</text></svg><svg x="15%" y="75%" overflow="visible"><circle r="40" fill="url(#hg)"/><circle r="27" fill="#0f1a12" stroke="#5fbf72" stroke-width="1.6"/><circle r="33" fill="none" stroke="#5fbf72" stroke-opacity=".35" stroke-dasharray="3 5"><animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="24s" repeatCount="indefinite"/></circle><g fill="none" stroke="#bfe6c4" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="-12" y="-10" width="24" height="16" rx="2"/><path d="M-4 11h8M0 6v5"/><path d="M-8 2l4-4 3 3 5-6" stroke="#ffd36b"/></g><text y="46" text-anchor="middle" fill="#9FC79A" fill-opacity=".85" font-family="Arial" font-size="9.5" font-weight="700" letter-spacing="2">OPERATIONS</text></svg><svg x="85%" y="75%" overflow="visible"><circle r="40" fill="url(#hg)"/><circle r="27" fill="#0f1a12" stroke="#5fbf72" stroke-width="1.6"/><circle r="33" fill="none" stroke="#5fbf72" stroke-opacity=".35" stroke-dasharray="3 5"><animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="24s" repeatCount="indefinite"/></circle><g fill="none" stroke="#bfe6c4" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M-14 5V-6h15v11M1-2h7l5 5v2H1"/><circle cx="-8" cy="7" r="2.6"/><circle cx="7" cy="7" r="2.6"/><path d="M-2-16l5 8h-10z" stroke="#ffb84d" stroke-width="1.8"/></g><text y="46" text-anchor="middle" fill="#9FC79A" fill-opacity=".85" font-family="Arial" font-size="9.5" font-weight="700" letter-spacing="2">ROAD RESCUE</text></svg><rect width="100%" height="100%" fill="url(#vg)"/></svg><div id="spl"><img src="logo-full-white.png?v=2" alt="HST" style="width:200px;max-width:62vw"><span id="spt">LIVE YARD</span></div><span id="upd"></span><div id="snp"></div><i id="spi"></i><div id="spq"><q id="spqt"></q><span id="spc">© 2026 HST – H. Safieddine Transport Ltd. All rights reserved.</span></div></div>
+<div id="sp"><svg id="spbg" aria-hidden="true"></svg><div id="spl"><img src="logo-full-white.png?v=2" alt="HST" style="width:200px;max-width:62vw"><span id="spt">LIVE YARD</span></div><span id="upd"></span><div id="snp"></div><i id="spi"></i><div id="spq"><q id="spqt"></q><span id="spc">© 2026 HST – H. Safieddine Transport Ltd. All rights reserved.</span></div></div><script>
+(function(){
+var NS='http://www.w3.org/2000/svg',G='#5fbf72';
+var IC={
+w:'<g transform="translate(-12 -12)"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" fill="rgba(95,191,114,.15)"/></g>',
+g:'<path d="M0 12C-5.5 6-8.5 1.5-8.5-2.5a8.5 8.5 0 0 1 17 0C8.5 1.5 5.5 6 0 12z" fill="rgba(95,191,114,.18)"/><circle cy="-2.5" r="3" fill="#bfe6c4" stroke="none"/><path d="M-13-8a15 15 0 0 1 4.5-7.5M13-8a15 15 0 0 0-4.5-7.5M-17-6a20 20 0 0 1 6-10M17-6a20 20 0 0 0-6-10" stroke-opacity=".55" stroke-width="1.6"/>',
+o:'<rect x="-12" y="-10" width="24" height="16" rx="2.5" fill="rgba(95,191,114,.12)"/><path d="M-4 11h8M0 6v5"/><path d="M-8 2l4-4 3 3 5-6" stroke="#ffd36b"/>',
+r:'<path d="M-14 6V-5h15v11M1-1h7l5 5v2H1" fill="rgba(95,191,114,.12)"/><circle cx="-8" cy="8" r="2.6" fill="#0f1a12"/><circle cx="7" cy="8" r="2.6" fill="#0f1a12"/><path d="M-1-17l5.5 9h-11z" stroke="#ffb84d" stroke-width="1.8" fill="rgba(255,184,77,.15)"/>'
+};
+var ND=[[.15,.27,'w','WORKSHOP','Repairs · PM · Yard',-1],[.85,.27,'g','GPS TRACKING','Live position · 15 min',-1],[.15,.75,'o','OPERATIONS','Dispatch · Confirm',1],[.85,.75,'r','ROAD RESCUE','Breakdowns · 24/7',1]];
+function rnd(s){return function(){s=(s*9301+49297)%233280;return s/233280}}
+function draw(){
+ var sv=document.getElementById('spbg');if(!sv)return;
+ var W=innerWidth,H=innerHeight,cx=W/2,cy=H/2,R=rnd(7),h='';
+ sv.setAttribute('viewBox','0 0 '+W+' '+H);
+ h+='<defs><pattern id="hx" width="28" height="48.5" patternUnits="userSpaceOnUse"><path d="M14 0l14 8.1v16.2L14 32.4 0 24.3V8.1zM14 32.4V48.5" fill="none" stroke="#2c4a32" stroke-width=".6"/></pattern>'
+  +'<radialGradient id="au"><stop offset="0" stop-color="'+G+'" stop-opacity=".22"/><stop offset=".6" stop-color="'+G+'" stop-opacity=".05"/><stop offset="1" stop-color="'+G+'" stop-opacity="0"/></radialGradient>'
+  +'<radialGradient id="hg"><stop offset="0" stop-color="'+G+'" stop-opacity=".35"/><stop offset="1" stop-color="'+G+'" stop-opacity="0"/></radialGradient>'
+  +'<linearGradient id="gl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#22432a"/><stop offset="1" stop-color="#0c150f"/></linearGradient>'
+  +'<linearGradient id="bd" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#9be3a8"/><stop offset=".5" stop-color="'+G+'" stop-opacity=".5"/><stop offset="1" stop-color="#9be3a8" stop-opacity=".9"/></linearGradient>'
+  +'<radialGradient id="vg" cx="50%" cy="50%" r="75%"><stop offset=".4" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".6"/></radialGradient>'
+  +'<filter id="bl" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="2.2"/></filter></defs>';
+ h+='<rect width="100%" height="100%" fill="url(#hx)" opacity=".5"/>';
+ // faint road map
+ var rd='';for(var i=0;i<8;i++){var v=i%2,p1=R(),p2=R(),d;if(v){var x1=p1*W,x2=p2*W;d='M'+x1.toFixed(0)+' -10Q'+((x1+x2)/2+(R()-.5)*W*.3).toFixed(0)+' '+(H*(.3+R()*.4)).toFixed(0)+' '+x2.toFixed(0)+' '+(H+10)}else{var y1=p1*H,y2=p2*H;d='M-10 '+y1.toFixed(0)+'Q'+(W*(.3+R()*.4)).toFixed(0)+' '+((y1+y2)/2+(R()-.5)*H*.3).toFixed(0)+' '+(W+10)+' '+y2.toFixed(0)}rd+='<path d="'+d+'"/>'}
+h+='<g fill="none" stroke="#3d6b46" stroke-opacity=".3" stroke-width="2.4" stroke-dasharray="14 6" stroke-linecap="round">'+rd+'</g>';
+ // gps pings
+ for(var i=0;i<6;i++){var px=(R()*W).toFixed(0),py=(R()*H).toFixed(0),dl=(i*0.7).toFixed(1);
+  h+='<g transform="translate('+px+' '+py+')"><circle r="2.4" fill="'+G+'" opacity=".7"/><circle r="3" fill="none" stroke="'+G+'"><animate attributeName="r" values="3;22" dur="3.2s" begin="'+dl+'s" repeatCount="indefinite"/><animate attributeName="opacity" values=".7;0" dur="3.2s" begin="'+dl+'s" repeatCount="indefinite"/></circle></g>'}
+ // center aura + rings
+ var rr=Math.min(W,H);
+ h+='<circle cx="'+cx+'" cy="'+cy+'" r="'+(rr*.62)+'" fill="url(#au)"/>';
+ h+='<g transform="translate('+cx+' '+cy+')" fill="none" stroke="'+G+'"><circle r="'+(rr*.36)+'" stroke-opacity=".16"/><g><circle r="'+(rr*.46)+'" stroke-opacity=".22" stroke-dasharray="1 9" stroke-width="2"/><animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="90s" repeatCount="indefinite"/></g><g><path d="M'+(rr*.46)+' 0A'+(rr*.46)+' '+(rr*.46)+' 0 0 1 0 '+(rr*.46)+'" stroke-opacity=".5" stroke-width="1.6"/><animateTransform attributeName="transform" type="rotate" from="0" to="-360" dur="40s" repeatCount="indefinite"/></g><circle r="'+(rr*.58)+'" stroke-opacity=".08"/></g>';
+ // connectors + nodes
+ var cn='',nd='';
+ ND.forEach(function(n,i){
+  var x=n[0]*W,y=n[1]*H,tx=cx+(x<cx?-1:1)*Math.min(W*.18,150),ty=cy+(y<cy?-1:1)*Math.min(H*.12,90);
+  var c1x=x+(tx-x)*.15,c1y=y+(ty-y)*.75,c2x=x+(tx-x)*.65,c2y=ty;
+  var d='M'+x.toFixed(1)+' '+y.toFixed(1)+'C'+c1x.toFixed(1)+' '+c1y.toFixed(1)+' '+c2x.toFixed(1)+' '+c2y.toFixed(1)+' '+tx.toFixed(1)+' '+ty.toFixed(1);
+  cn+='<path id="cp'+i+'" d="'+d+'" stroke="'+G+'" stroke-opacity=".18" stroke-width="5" filter="url(#bl)"/><path d="'+d+'" stroke="'+G+'" stroke-opacity=".45" stroke-width="1.2"/>';
+  for(var k=0;k<3;k++)cn+='<circle r="2.6" fill="#d8ffe0"><animateMotion dur="2.7s" begin="'+(k*.9+i*.3).toFixed(2)+'s" repeatCount="indefinite" calcMode="spline" keyTimes="0;1" keySplines=".4 0 .6 1"><mpath href="#cp'+i+'"/></animateMotion><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;.15;.8;1" dur="2.7s" begin="'+(k*.9+i*.3).toFixed(2)+'s" repeatCount="indefinite"/></circle>';
+  var ly=n[5]<0?-56:52;
+  nd+='<g transform="translate('+x.toFixed(1)+' '+y.toFixed(1)+')"><circle r="48" fill="url(#hg)"/><circle r="29" fill="url(#gl)" stroke="url(#bd)" stroke-width="1.4"/><circle r="24" fill="none" stroke="#fff" stroke-opacity=".06"/>'
+   +'<g><circle r="36" fill="none" stroke="'+G+'" stroke-opacity=".3" stroke-dasharray="2 6"/><circle cx="36" r="2.4" fill="#9be3a8"/><animateTransform attributeName="transform" type="rotate" from="'+(i*90)+'" to="'+(i*90+360)+'" dur="'+(14+i*3)+'s" repeatCount="indefinite"/></g>'
+   +'<g fill="none" stroke="#c8f0ce" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'+IC[n[2]]+'</g>'
+   +'<text y="'+ly+'" text-anchor="middle" fill="#e3f3e5" font-family="Arial" font-size="10.5" font-weight="700" letter-spacing="2.2">'+n[3]+'</text>'
+   +'<text y="'+(ly+14)+'" text-anchor="middle" fill="#7fa886" font-family="Arial" font-size="9.5" letter-spacing=".4">'+n[4]+'</text></g>';
+ });
+ h+='<g fill="none">'+cn+'</g>'+nd+'<rect width="100%" height="100%" fill="url(#vg)"/>';
+ sv.innerHTML=h;
+}
+var t;draw();addEventListener('resize',function(){clearTimeout(t);t=setTimeout(draw,150)});
+})();
+</script>
 <iframe id="f" title="HST Live Yard" credentialless allow="clipboard-write; geolocation"></iframe>
 <button id="nb" type="button">🔔 Turn on alerts</button>
 <div id="ib"><img src="icon-192.png?v=2" alt=""><span>Install the HST Live Yard app<small>Faster, full screen + alerts on your phone</small></span><button id="ibi" type="button">Install</button><button id="ibx" type="button" aria-label="Close">×</button></div>
