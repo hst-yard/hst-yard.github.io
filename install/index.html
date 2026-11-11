@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Install HST Live Yard</title>
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="theme-color" content="#1B201B">
+<link rel="icon" href="/favicon-32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="HST Live Yard">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:#1B201B;color:#fff;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+.c{background:#fff;color:#1B201B;border-radius:20px;max-width:380px;width:100%;padding:32px 24px;text-align:center;box-shadow:0 20px 50px rgba(0,0,0,.35)}
+.c img.ic{width:96px;height:96px;border-radius:22px;box-shadow:0 6px 18px rgba(0,0,0,.2)}
+h1{font-size:22px;margin:16px 0 4px}
+.s{color:#667;font-size:14px;margin-bottom:24px}
+.b{display:block;width:100%;border:0;border-radius:14px;padding:16px;font-size:18px;font-weight:700;cursor:pointer;text-decoration:none}
+.p{background:#2E9B57;color:#fff}
+.p:active{background:#237a44}
+.o{background:#eef1ee;color:#1B201B;margin-top:10px;font-size:15px;padding:12px}
+.st{text-align:left;background:#f6f7f6;border-radius:12px;padding:14px 16px;margin-top:16px;font-size:15px;line-height:1.6;display:none}
+.st ol{padding-left:20px}
+.ok{color:#2E9B57;font-weight:700;margin-top:14px;display:none}
+.f{color:#99a;font-size:11px;margin-top:22px}
+</style>
+</head><body>
+<div class="c">
+  <img class="ic" src="/icon-192.png?v=2" alt="">
+  <h1>HST Live Yard</h1>
+  <div class="s">H. Safieddine Transport Ltd – Lagos</div>
+  <button class="b p" id="ins">⬇ Install app</button>
+  <div class="ok" id="ok">✅ Installed – open HST Live Yard from your home screen</div>
+  <div class="st" id="st"></div>
+  <a class="b o" href="/">Open in browser</a>
+  <div class="f">© 2026 H. Safieddine Transport Ltd</div>
+</div>
+<script>
+(function(){
+  var dp=null,ins=document.getElementById('ins'),st=document.getElementById('st'),ok=document.getElementById('ok');
+  var ua=navigator.userAgent,ios=/iphone|ipad|ipod/i.test(ua)||(/Macintosh/.test(ua)&&'ontouchend' in document);
+  var sa=(window.matchMedia&&matchMedia('(display-mode: standalone)').matches)||navigator.standalone===true;
+  if(sa){location.replace('/');return}
+  if('serviceWorker' in navigator)navigator.serviceWorker.register('/sw.js',{scope:'/',updateViaCache:'none'}).catch(function(){});
+  window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();dp=e});
+  window.addEventListener('appinstalled',function(){done()});
+  function done(){ins.style.display='none';st.style.display='none';ok.style.display='block'}
+  function steps(h){st.innerHTML=h;st.style.display='block'}
+  ins.onclick=function(){
+    if(dp){dp.prompt();dp.userChoice.then(function(c){if(c&&c.outcome==='accepted')done();dp=null});return}
+    if(ios){
+      if(!/safari/i.test(ua)||/crios|fxios|edgios/i.test(ua))steps('<b>Open this link in Safari first</b>, then:<ol><li>Tap <b>Share</b> (square with arrow)</li><li>Tap <b>Add to Home Screen</b></li><li>Tap <b>Add</b></li></ol>');
+      else steps('<ol><li>Tap <b>Share</b> (square with arrow) at the bottom</li><li>Tap <b>Add to Home Screen</b></li><li>Tap <b>Add</b></li></ol>');
+      return}
+    if(/SamsungBrowser/i.test(ua))steps('<ol><li>Tap the menu <b>≡</b> (bottom right)</li><li>Tap <b>Add page to</b> → <b>Home screen</b></li><li>Tap <b>Add</b></li></ol>');
+    else steps('<ol><li>Wait 2 seconds and tap <b>Install app</b> again</li><li>Or tap Chrome menu <b>⋮</b> → <b>Install app</b> / <b>Add to Home screen</b></li></ol>');
+  };
+})();
+</script>
+</body></html>
