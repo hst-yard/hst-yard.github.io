@@ -15,9 +15,11 @@
 <style>
 html,body{margin:0;height:100%;background:#1B201B;overflow:hidden}
 #f{position:fixed;left:0;right:0;bottom:0;width:100%;border:0;background:#F2F4F0}
-#sp{position:fixed;inset:0;z-index:4;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px 0 max(14vh,110px);box-sizing:border-box;background:radial-gradient(120% 75% at 50% 0%,#2a4a30 0%,#1B201B 58%,#121612 100%);color:#9FC79A;font:600 15px Arial,Helvetica,sans-serif;letter-spacing:.06em;transition:opacity .35s}
-#sp>img{filter:drop-shadow(0 6px 18px rgba(0,0,0,.45))}
-#spt{font-size:13px;letter-spacing:.32em;color:#9FC79A;margin-top:-4px}
+#sp{position:fixed;inset:0;z-index:4;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:0;box-sizing:border-box;background:radial-gradient(120% 75% at 50% 0%,#2a4a30 0%,#1B201B 58%,#121612 100%);color:#9FC79A;font:600 15px Arial,Helvetica,sans-serif;letter-spacing:.06em;transition:opacity .35s}
+#spl{position:absolute;top:max(7vh,48px);left:0;right:0;display:flex;flex-direction:column;align-items:center;gap:10px}#spl img{filter:drop-shadow(0 6px 18px rgba(0,0,0,.45))}
+#snp{margin-top:0!important}
+#spc{display:block;margin-top:6px;font:500 11px Arial,sans-serif;letter-spacing:.06em;color:#5d7a61;text-transform:none}
+#spt{font-size:13px;letter-spacing:.32em;color:#9FC79A}
 #spq{position:absolute;left:0;right:0;bottom:max(4vh,22px);text-align:center;padding:0 24px;letter-spacing:0}
 #spq q{display:block;font:italic 500 15px/1.4 Georgia,'Times New Roman',serif;color:#d9ead5;quotes:'“' '”'}
 #spq small{display:block;margin-top:8px;font:600 11px Arial,sans-serif;letter-spacing:.18em;color:#6f8f73;text-transform:uppercase}
@@ -60,12 +62,12 @@ html,body{margin:0;height:100%;background:#1B201B;overflow:hidden}
 @keyframes ld{0%{transform:translateX(-100%)}100%{transform:translateX(260%)}}
 #upd{display:none;font:600 14px Arial,sans-serif;color:#cfe3cb;letter-spacing:.02em}
 @media(min-width:900px){#snp{padding:20px 24px 16px}#snp .big b{font-size:52px}}
-@media(min-height:900px){#sp>img{width:240px!important}#spt{font-size:15px}#snp{width:min(88vw,540px);padding:22px 26px 18px}#snp .big b{font-size:58px}#snp .fl{padding:12px 0 10px}#snp .fl .n{font-size:16px}#spq q{font-size:18px}}
-@media(max-height:640px){#spq{display:none}}
+@media(min-height:900px){#spl img{width:240px!important}#spt{font-size:15px}#snp{width:min(88vw,540px);padding:22px 26px 18px}#snp .big b{font-size:58px}#snp .fl{padding:12px 0 10px}#snp .fl .n{font-size:16px}#spq q{font-size:18px}}
+@media(max-height:700px){#spq q{display:none}}@media(max-height:560px){#spl{display:none}}
 </style>
 </head>
 <body>
-<div id="sp"><img src="logo-full-white.png?v=2" alt="HST" style="width:200px;max-width:62vw"><span id="spt">LIVE YARD</span><span id="upd"></span><div id="snp"></div><i id="spi"></i><div id="spq"><q id="spqt"></q><small>H. Safieddine Transport · Lagos Workshop</small></div></div>
+<div id="sp"><div id="spl"><img src="logo-full-white.png?v=2" alt="HST" style="width:200px;max-width:62vw"><span id="spt">LIVE YARD</span></div><span id="upd"></span><div id="snp"></div><i id="spi"></i><div id="spq"><q id="spqt"></q><span id="spc">© 2026 HST – H. Safieddine Transport Ltd. All rights reserved.</span></div></div>
 <iframe id="f" title="HST Live Yard" credentialless allow="clipboard-write; geolocation"></iframe>
 <button id="nb" type="button">🔔 Turn on alerts</button>
 <div id="ib"><img src="icon-192.png?v=2" alt=""><span>Install the HST Live Yard app<small>Faster, full screen + alerts on your phone</small></span><button id="ibi" type="button">Install</button><button id="ibx" type="button" aria-label="Close">×</button></div>
