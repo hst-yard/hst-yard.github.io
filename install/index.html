@@ -48,11 +48,14 @@ h1{font-size:22px;margin:16px 0 4px}
   function done(){ins.style.display='none';st.style.display='none';ok.style.display='block'}
   function steps(h){st.innerHTML=h;st.style.display='block'}
   ins.onclick=function(){
+    if(!dp&&!ios&&!window.__w){window.__w=1;var n=0,t=setInterval(function(){n++;if(dp||n>10){clearInterval(t);ins.onclick();window.__w=0}},200);return}
     if(dp){dp.prompt();dp.userChoice.then(function(c){if(c&&c.outcome==='accepted')done();dp=null});return}
     if(ios){
       if(!/safari/i.test(ua)||/crios|fxios|edgios/i.test(ua))steps('<b>Open this link in Safari first</b>, then:<ol><li>Tap <b>Share</b> (square with arrow)</li><li>Tap <b>Add to Home Screen</b></li><li>Tap <b>Add</b></li></ol>');
       else steps('<ol><li>Tap <b>Share</b> (square with arrow) at the bottom</li><li>Tap <b>Add to Home Screen</b></li><li>Tap <b>Add</b></li></ol>');
       return}
+    if(/Android/i.test(ua)){var a=document.createElement('a');a.href='/hst-live-yard.apk';a.download='HST Live Yard.apk';document.body.appendChild(a);a.click();a.remove();steps('<ol><li>The app is downloading (1 MB)</li><li>Tap the downloaded file, then <b>Install</b></li><li>If the phone asks, allow <b>Install unknown apps</b> – once only</li></ol>');return}
+    if(!/Mobi/i.test(ua)){steps('Chrome did not offer the install – usually <b>HST Live Yard is already installed</b> on this computer (Start menu / desktop, or <b>Open in app</b> in the address bar).<br>Not installed? Chrome ⋮ → <b>Cast, save and share</b> → <b>Install page as app</b>.');return}
     if(/SamsungBrowser/i.test(ua))steps('<ol><li>Tap the menu <b>≡</b> (bottom right)</li><li>Tap <b>Add page to</b> → <b>Home screen</b></li><li>Tap <b>Add</b></li></ol>');
     else steps('<ol><li>Wait 2 seconds and tap <b>Install app</b> again</li><li>Or tap Chrome menu <b>⋮</b> → <b>Install app</b> / <b>Add to Home screen</b></li></ol>');
   };
