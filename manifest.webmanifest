@@ -1,7 +1,7 @@
 {
   "name": "HST Live Yard",
   "short_name": "HST Live Yard",
-  "description": "H. Safieddine Transport Ltd – Lagos live yard",
+  "description": "HST live yard: trucks in the yard, under repair, ready and on the road – workshop, Operations, gate and GPS on one board.",
   "id": "/",
   "start_url": "/",
   "scope": "/",
@@ -50,6 +50,26 @@
     {
       "platform": "webapp",
       "url": "https://hst-yard.github.io/manifest.webmanifest"
+    }
+  ],
+  "categories": [
+    "business",
+    "productivity"
+  ],
+  "screenshots": [
+    {
+      "src": "shot-wide.jpg",
+      "sizes": "1280x672",
+      "type": "image/jpeg",
+      "form_factor": "wide",
+      "label": "Live yard dashboard"
+    },
+    {
+      "src": "shot-narrow.jpg",
+      "sizes": "412x867",
+      "type": "image/jpeg",
+      "form_factor": "narrow",
+      "label": "Live yard on the phone"
     }
   ]
 }
