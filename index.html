@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>HST Live Yard</title>
+<meta name="theme-color" content="#1B201B">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="HST Live Yard">
+<meta name="robots" content="noindex, nofollow">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="favicon-32.png?v=2">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2">
+<style>
+html,body{margin:0;height:100%;background:#1B201B;overflow:hidden}
+#f{position:fixed;left:0;right:0;bottom:0;width:100%;border:0;background:#F2F4F0}
+#sp{position:fixed;top:0;right:0;bottom:0;left:0;z-index:4;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:0;box-sizing:border-box;background:radial-gradient(120% 75% at 50% 0%,#2a4a30 0%,#1B201B 58%,#121612 100%);color:#9FC79A;font:600 15px Arial,Helvetica,sans-serif;letter-spacing:.06em;transition:opacity .35s}
+#sp #spbg{position:absolute;top:0;right:0;bottom:0;left:0;width:100%!important;height:100%!important;max-width:none;max-height:none;z-index:0;pointer-events:none}#spbg .fl{stroke-dasharray:4 7;animation:fw 1.6s linear infinite}@keyframes fw{to{stroke-dashoffset:-22}}#spl,#snp,#spi,#upd,#spq{z-index:1}#snp,#spi,#upd{position:relative}@media(max-height:560px){#sp #spbg svg{display:none}}#spl{position:absolute;top:max(7vh,48px);left:0;right:0;display:flex;flex-direction:column;align-items:center;gap:10px}#spl img{filter:drop-shadow(0 6px 18px rgba(0,0,0,.45))}
+#snp{margin-top:0!important}
+#spc{display:block;margin-top:6px;font:500 11px Arial,sans-serif;letter-spacing:.06em;color:#5d7a61;text-transform:none}
+#spt{font-size:13px;letter-spacing:.32em;color:#9FC79A}
+#spq{position:absolute;left:0;right:0;bottom:max(4vh,22px);text-align:center;padding:0 24px;letter-spacing:0}
+#spq q{display:block;font:italic 500 15px/1.4 Georgia,'Times New Roman',serif;color:#d9ead5;quotes:'“' '”'}
+#spq small{display:block;margin-top:8px;font:600 11px Arial,sans-serif;letter-spacing:.18em;color:#6f8f73;text-transform:uppercase}
+#spi{margin-top:18px}
+#sp svg{width:150px}
+#spi{display:block;width:38px;height:38px;border-radius:50%;border:3px solid #3A443C;border-top-color:#067327;animation:r 0.9s linear infinite}
+@keyframes r{to{transform:rotate(360deg)}}
+#nb{display:none;position:fixed;left:12px;bottom:calc(74px + env(safe-area-inset-bottom,0px));z-index:6;background:#067327;color:#fff;border:0;border-radius:22px;padding:10px 16px;font:600 14px Arial,sans-serif;box-shadow:0 2px 10px rgba(0,0,0,.35);cursor:pointer}
+#off{display:none;position:fixed;left:50%;bottom:18px;transform:translateX(-50%);background:#E0661F;color:#fff;padding:9px 14px;border-radius:10px;font:600 14px Arial,sans-serif;z-index:5}
+#ib{display:none;position:fixed;top:0;left:0;right:0;z-index:7;background:#067327;color:#fff;font:600 14px Arial,sans-serif;padding:8px 10px;align-items:center;gap:8px;box-shadow:0 2px 8px rgba(0,0,0,.3)}
+#ib img{width:30px;height:30px;border-radius:7px;background:#fff}
+#ib span{flex:1;line-height:1.25}#ib small{display:block;font-weight:400;font-size:12px;opacity:.9}
+#ib button{border:0;border-radius:16px;padding:7px 13px;font:700 13px Arial,sans-serif;cursor:pointer}
+#ibi{background:#fff;color:#067327}#ibx{background:transparent;color:#fff;font-size:18px!important;padding:4px 8px!important}
+#hp{display:none;position:fixed;top:0;right:0;bottom:0;left:0;z-index:9;background:rgba(0,0,0,.55);align-items:flex-end;justify-content:center}
+#hp div{background:#fff;color:#1B201B;width:100%;max-width:480px;border-radius:16px 16px 0 0;padding:16px 18px 22px;font:14px/1.5 Arial,sans-serif}
+#hp b.t{display:block;font-size:16px;margin-bottom:6px;color:#067327}#hp ol{margin:6px 0 12px;padding-left:20px}
+#hp button{width:100%;border:0;border-radius:10px;padding:11px;background:#067327;color:#fff;font:700 14px Arial,sans-serif}
+#snp{display:none;box-sizing:border-box;width:min(92vw,470px);margin-top:14px;background:#fff;color:#1B201B;border-radius:18px;padding:16px 18px 14px;font:14px/1.45 Arial,sans-serif;letter-spacing:0;box-shadow:0 18px 40px rgba(0,0,0,.45);border-top:4px solid #067327}
+#snp .st{display:flex;align-items:center;gap:8px;font-size:11.5px;color:#6B776F;margin-bottom:10px;text-transform:uppercase;letter-spacing:.08em;font-weight:700}
+#snp .st .lb{color:#067327}
+#snp .dot{flex:0 0 auto;width:9px;height:9px;border-radius:50%;background:#C9302C;box-shadow:0 0 0 3px rgba(198,40,40,.18);animation:pl 1.4s ease-in-out infinite}
+@keyframes pl{50%{opacity:.35}}
+#snp .big{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+#snp .big b{font:800 44px/1 Arial,sans-serif;color:#067327;letter-spacing:-1px}
+#snp .big span{font-size:14px;color:#3A443C;font-weight:600}
+#snp .tg{position:relative;height:8px;border-radius:5px;background:#eef0ec;margin:10px 0 4px;overflow:hidden}
+#snp .tg i{position:absolute;left:0;top:0;bottom:0;border-radius:5px;background:linear-gradient(90deg,#2E9B57,#067327)}
+#snp .tg s{position:absolute;top:0;bottom:0;left:85%;width:3%;background:rgba(0,0,0,.18)}
+#snp .tl{display:flex;justify-content:space-between;font-size:11px;color:#6B776F;margin-bottom:6px}
+#snp .fl{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:4px 12px;padding:9px 0 8px;border-top:1px solid #eef0ec}
+#snp .fl .n{font-weight:800;font-size:14px;min-width:70px}
+#snp .fl .mb{height:6px;border-radius:4px;background:#eef0ec;overflow:hidden}#snp .fl .mb i{display:block;height:100%;border-radius:4px;background:#2E9B57}
+#snp .fl .p{font-weight:800;font-size:13px;padding:2px 9px;border-radius:12px;background:#E5F3EA;color:#1E6B3C}
+#snp .fl .p.a{background:#FBF0DC;color:#8A560A}#snp .fl .p.r{background:#F9E3E0;color:#E0661F}
+#snp .fl.a .mb i{background:#E39B26}#snp .fl.r .mb i{background:#C9302C}
+#snp .fl .d{grid-column:1/4;font-size:12px;color:#6B776F}
+#snp .bar{height:3px;border-radius:3px;background:#eef0ec;margin-top:10px;overflow:hidden}
+#snp .bar i{display:block;height:100%;width:40%;background:#067327;border-radius:3px;animation:ld 1.2s ease-in-out infinite}
+@keyframes ld{0%{transform:translateX(-100%)}100%{transform:translateX(260%)}}
+#upd{display:none;font:600 14px Arial,sans-serif;color:#cfe3cb;letter-spacing:.02em}
+@media(min-width:900px){#snp{padding:20px 24px 16px}#snp .big b{font-size:52px}}
+@media(min-height:900px){#spl img{width:240px!important}#spt{font-size:15px}#snp{width:min(88vw,540px);padding:22px 26px 18px}#snp .big b{font-size:58px}#snp .fl{padding:12px 0 10px}#snp .fl .n{font-size:16px}#spq q{font-size:18px}}
+@media(max-height:700px){#spq q{display:none}}@media(max-height:560px){#spl{display:none}}
+</style>
+</head>
+<body>
+<div id="sp"><svg id="spbg" aria-hidden="true"></svg><div id="spl"><img src="logo-full-white.png?v=2" alt="HST" style="width:200px;max-width:62vw"><span id="spt">LIVE YARD</span></div><span id="upd"></span><div id="snp"></div><i id="spi"></i><div id="spq"><q id="spqt"></q><span id="spc">© 2026 HST – H. Safieddine Transport Ltd. All rights reserved.</span></div></div><script>
+(function(){
+var NS='http://www.w3.org/2000/svg',G='#5fbf72';
+var IC={
+w:'<g transform="translate(-12 -12)"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" fill="rgba(95,191,114,.15)"/></g>',
+g:'<path d="M0 12C-5.5 6-8.5 1.5-8.5-2.5a8.5 8.5 0 0 1 17 0C8.5 1.5 5.5 6 0 12z" fill="rgba(95,191,114,.18)"/><circle cy="-2.5" r="3" fill="#bfe6c4" stroke="none"/><path d="M-13-8a15 15 0 0 1 4.5-7.5M13-8a15 15 0 0 0-4.5-7.5M-17-6a20 20 0 0 1 6-10M17-6a20 20 0 0 0-6-10" stroke-opacity=".55" stroke-width="1.6"/>',
+o:'<rect x="-12" y="-10" width="24" height="16" rx="2.5" fill="rgba(95,191,114,.12)"/><path d="M-4 11h8M0 6v5"/><path d="M-8 2l4-4 3 3 5-6" stroke="#F2B544"/>',
+r:'<path d="M-14 6V-5h15v11M1-1h7l5 5v2H1" fill="rgba(95,191,114,.12)"/><circle cx="-8" cy="8" r="2.6" fill="#0f1a12"/><circle cx="7" cy="8" r="2.6" fill="#0f1a12"/><path d="M-1-17l5.5 9h-11z" stroke="#F2B544" stroke-width="1.8" fill="rgba(255,184,77,.15)"/>'
+};
+var ND=[[.15,.27,'w','WORKSHOP','Repairs · PM · Yard',-1],[.85,.27,'g','GPS TRACKING','Live position · 15 min',-1],[.15,.75,'o','OPERATIONS','Dispatch · Confirm',1],[.85,.75,'r','ROAD RESCUE','Breakdowns · 24/7',1]];
+function rnd(s){return function(){s=(s*9301+49297)%233280;return s/233280}}
+function draw(){
+ var sv=document.getElementById('spbg');if(!sv)return;
+ var W=innerWidth,H=innerHeight,cx=W/2,cy=H/2,R=rnd(7),h='';
+ sv.setAttribute('viewBox','0 0 '+W+' '+H);
+ h+='<defs><pattern id="hx" width="28" height="48.5" patternUnits="userSpaceOnUse"><path d="M14 0l14 8.1v16.2L14 32.4 0 24.3V8.1zM14 32.4V48.5" fill="none" stroke="#2c4a32" stroke-width=".6"/></pattern>'
+  +'<radialGradient id="au"><stop offset="0" stop-color="'+G+'" stop-opacity=".22"/><stop offset=".6" stop-color="'+G+'" stop-opacity=".05"/><stop offset="1" stop-color="'+G+'" stop-opacity="0"/></radialGradient>'
+  +'<radialGradient id="hg"><stop offset="0" stop-color="'+G+'" stop-opacity=".35"/><stop offset="1" stop-color="'+G+'" stop-opacity="0"/></radialGradient>'
+  +'<linearGradient id="gl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#22432a"/><stop offset="1" stop-color="#0c150f"/></linearGradient>'
+  +'<linearGradient id="bd" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#9be3a8"/><stop offset=".5" stop-color="'+G+'" stop-opacity=".5"/><stop offset="1" stop-color="#9be3a8" stop-opacity=".9"/></linearGradient>'
+  +'<radialGradient id="vg" cx="50%" cy="50%" r="75%"><stop offset=".4" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".6"/></radialGradient>'
+  +'<filter id="bl" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="2.2"/></filter></defs>';
+ h+='<rect width="100%" height="100%" fill="url(#hx)" opacity=".5"/>';
+ // faint road map
+ var rd='';for(var i=0;i<8;i++){var v=i%2,p1=R(),p2=R(),d;if(v){var x1=p1*W,x2=p2*W;d='M'+x1.toFixed(0)+' -10Q'+((x1+x2)/2+(R()-.5)*W*.3).toFixed(0)+' '+(H*(.3+R()*.4)).toFixed(0)+' '+x2.toFixed(0)+' '+(H+10)}else{var y1=p1*H,y2=p2*H;d='M-10 '+y1.toFixed(0)+'Q'+(W*(.3+R()*.4)).toFixed(0)+' '+((y1+y2)/2+(R()-.5)*H*.3).toFixed(0)+' '+(W+10)+' '+y2.toFixed(0)}rd+='<path d="'+d+'"/>'}
+h+='<g fill="none" stroke="#3d6b46" stroke-opacity=".3" stroke-width="2.4" stroke-dasharray="14 6" stroke-linecap="round">'+rd+'</g>';
+ // gps pings
+ for(var i=0;i<6;i++){var px=(R()*W).toFixed(0),py=(R()*H).toFixed(0),dl=(i*0.7).toFixed(1);
+  h+='<g transform="translate('+px+' '+py+')"><circle r="2.4" fill="'+G+'" opacity=".7"/><circle r="3" fill="none" stroke="'+G+'"><animate attributeName="r" values="3;22" dur="3.2s" begin="'+dl+'s" repeatCount="indefinite"/><animate attributeName="opacity" values=".7;0" dur="3.2s" begin="'+dl+'s" repeatCount="indefinite"/></circle></g>'}
+ // center aura + rings
+ var rr=Math.min(W,H);
+ h+='<circle cx="'+cx+'" cy="'+cy+'" r="'+(rr*.62)+'" fill="url(#au)"/>';
+ h+='<g transform="translate('+cx+' '+cy+')" fill="none" stroke="'+G+'"><circle r="'+(rr*.36)+'" stroke-opacity=".16"/><g><circle r="'+(rr*.46)+'" stroke-opacity=".22" stroke-dasharray="1 9" stroke-width="2"/><animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="90s" repeatCount="indefinite"/></g><g><path d="M'+(rr*.46)+' 0A'+(rr*.46)+' '+(rr*.46)+' 0 0 1 0 '+(rr*.46)+'" stroke-opacity=".5" stroke-width="1.6"/><animateTransform attributeName="transform" type="rotate" from="0" to="-360" dur="40s" repeatCount="indefinite"/></g><circle r="'+(rr*.58)+'" stroke-opacity=".08"/></g>';
+ // connectors + nodes
+ var cn='',nd='';
+ ND.forEach(function(n,i){
+  var x=n[0]*W,y=n[1]*H,tx=cx+(x<cx?-1:1)*Math.min(W*.18,150),ty=cy+(y<cy?-1:1)*Math.min(H*.12,90);
+  var c1x=x+(tx-x)*.15,c1y=y+(ty-y)*.75,c2x=x+(tx-x)*.65,c2y=ty;
+  var d='M'+x.toFixed(1)+' '+y.toFixed(1)+'C'+c1x.toFixed(1)+' '+c1y.toFixed(1)+' '+c2x.toFixed(1)+' '+c2y.toFixed(1)+' '+tx.toFixed(1)+' '+ty.toFixed(1);
+  cn+='<path id="cp'+i+'" d="'+d+'" stroke="'+G+'" stroke-opacity=".18" stroke-width="5" filter="url(#bl)"/><path d="'+d+'" stroke="'+G+'" stroke-opacity=".45" stroke-width="1.2"/>';
+  for(var k=0;k<3;k++)cn+='<circle r="2.6" fill="#d8ffe0"><animateMotion dur="2.7s" begin="'+(k*.9+i*.3).toFixed(2)+'s" repeatCount="indefinite" calcMode="spline" keyTimes="0;1" keySplines=".4 0 .6 1"><mpath href="#cp'+i+'"/></animateMotion><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;.15;.8;1" dur="2.7s" begin="'+(k*.9+i*.3).toFixed(2)+'s" repeatCount="indefinite"/></circle>';
+  var ly=n[5]<0?-56:52;
+  nd+='<g transform="translate('+x.toFixed(1)+' '+y.toFixed(1)+')"><circle r="48" fill="url(#hg)"/><circle r="29" fill="url(#gl)" stroke="url(#bd)" stroke-width="1.4"/><circle r="24" fill="none" stroke="#fff" stroke-opacity=".06"/>'
+   +'<g><circle r="36" fill="none" stroke="'+G+'" stroke-opacity=".3" stroke-dasharray="2 6"/><circle cx="36" r="2.4" fill="#9be3a8"/><animateTransform attributeName="transform" type="rotate" from="'+(i*90)+'" to="'+(i*90+360)+'" dur="'+(14+i*3)+'s" repeatCount="indefinite"/></g>'
+   +'<g fill="none" stroke="#c8f0ce" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'+IC[n[2]]+'</g>'
+   +'<text y="'+ly+'" text-anchor="middle" fill="#e3f3e5" font-family="Arial" font-size="10.5" font-weight="700" letter-spacing="2.2">'+n[3]+'</text>'
+   +'<text y="'+(ly+14)+'" text-anchor="middle" fill="#7fa886" font-family="Arial" font-size="9.5" letter-spacing=".4">'+n[4]+'</text></g>';
+ });
+ h+='<g fill="none">'+cn+'</g>'+nd+'<rect width="100%" height="100%" fill="url(#vg)"/>';
+ sv.innerHTML=h;
+}
+var t;draw();addEventListener('resize',function(){clearTimeout(t);t=setTimeout(draw,150)});
+})();
+</script>
+<iframe id="f" title="HST Live Yard" credentialless allow="clipboard-write; geolocation"></iframe>
+<button id="nb" type="button">🔔 Turn on alerts</button>
+<div id="ib"><img src="icon-192.png?v=2" alt=""><span>Install the HST Live Yard app<small>Faster, full screen + alerts on your phone</small></span><button id="ibi" type="button">Install</button><button id="ibx" type="button" aria-label="Close">×</button></div>
+<div id="hp"><div><b class="t" id="hpt"></b><div id="hpb"></div><button type="button" id="hpc">OK</button></div></div>
+<div id="off">No internet – showing when back online</div>
+<script>
+(function(){
+  var EX='https:\/\/script.google.com/macros/s/AKfycbzg-j_vp6eTY-uuGI2k2a7jsy9PQGdh-mYsk48JdY3zSnKO86xiX3v_JOHTmL67oMdF/exec';
+  var ws=/[?&#]ws\b/.test(location.search+location.hash);
+  if(ws){document.title='HST Workshop Desk';document.getElementById('spt').textContent='WORKSHOP DESK';}
+  var f=document.getElementById('f'), sp=document.getElementById('sp');
+  var ib=document.getElementById('ib');function fit(){var t=ib.style.display==='flex'?ib.offsetHeight:0;f.style.top=t+'px';f.style.height=(window.innerHeight-t)+'px';}window.__fit=fit;
+  window.addEventListener('resize',fit);fit();
+  function hideSp(){if(sp.style.display==='none')return;sp.style.opacity=0;setTimeout(function(){sp.style.display='none'},400)}
+  try{if(sessionStorage.getItem('hstUpd')){sessionStorage.removeItem('hstUpd');var u0=document.getElementById('upd');u0.textContent='✓ Updated – opening…';u0.style.display='block'}}catch(x){}
+  (function(){var Q=['Safety first – no truck leaves the gate with a known defect.','PM today prevents the breakdown tomorrow.','A truck in the yard earns nothing – fix it right, fix it fast.','Every job card closed is a truck back on the road.','Check the tyres before the trip, not after the burst.','Good work is done once.','Clean yard, safe yard.'];var d=new Date(),i=(d.getFullYear()*372+d.getMonth()*31+d.getDate())%Q.length;var e=document.getElementById('spqt');if(e)e.textContent=Q[i]})();
+  var SN=null;try{SN=JSON.parse(localStorage.getItem('hstSnap')||'null')}catch(x){}
+  var waitLive=!ws&&SN&&SN.head&&localStorage.getItem('hstpin');
+  if(waitLive){var e1=function(t){return String(t).replace(/[&<>]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c]})};
+    var dt=new Date(SN.at),hm=('0'+dt.getHours()).slice(-2)+':'+('0'+dt.getMinutes()).slice(-2),dy=(new Date().toDateString()===dt.toDateString())?'today':dt.toLocaleDateString();
+    var c=document.getElementById('snp');
+    var fl=function(x){x=String(x);var m=x.match(/(\d+)\s*%/),pc=m?+m[1]:null,nm=x.split(/\s[·•]\s|\s\d+\s*%/)[0],rest=x.replace(nm,'').replace(/^\s*[·•]\s*/,'').replace(/\d+\s*%\s*/,'');var cl=pc==null?'':pc>=85?'':pc>=75?' a':' r';return '<div class="fl'+cl+'"><span class="n">'+e1(nm)+'</span><span class="mb"><i style="width:'+(pc||0)+'%"></i></span>'+(pc!=null?'<span class="p'+cl+'">'+pc+'%</span>':'<span></span>')+'<span class="d">'+e1(rest)+'</span></div>'};
+    var hm2=String(SN.head).match(/(\d+)\s*of\s*(\d+)[^\d]*?(\d+)\s*%/),big=hm2?'<div class="big"><b>'+hm2[3]+'%</b><span>available · '+hm2[1]+' of '+hm2[2]+' trucks</span></div><div class="tg"><i style="width:'+hm2[3]+'%"></i><s></s></div><div class="tl"><span>0%</span><span>target 85–88%</span><span>100%</span></div>':'<div class="big"><span>'+e1(SN.head)+'</span></div>';
+    c.innerHTML='<div class="st"><span class="dot"></span><span class="lb">Fleet now</span><span id="snpS" style="margin-left:auto;text-transform:none;letter-spacing:0;font-weight:600">'+(navigator.onLine?'connecting…':'offline')+' · '+(dy==='today'?'':dy+' ')+hm+'</span></div>'+big+(SN.fleets||[]).map(fl).join('')+'<div class="bar"><i></i></div>';
+    c.style.display='block';document.getElementById('spi').style.display='none';sp.querySelector('img').style.width='150px';
+    setTimeout(hideSp,25000);}
+  window.__goLive=hideSp;
+  f.addEventListener('load',function(){if(!waitLive)setTimeout(hideSp,900)});
+  window.addEventListener('message',function(e){var h='';try{h=new URL(e.origin).hostname}catch(x){}if(!/\.googleusercontent\.com$/.test(h))return;var d=e.data||{};
+    try{if(d.hst==='pin-save'&&d.pin)localStorage.setItem('hstpin',String(d.pin));if(d.hst==='pin-clear')localStorage.removeItem('hstpin');
+    if(d.hst==='kv-set'&&d.k)localStorage.setItem('kv_'+d.k,String(d.v));
+    if(d.hst==='kv-get'&&d.k&&e.source)e.source.postMessage({hst:'kv',k:d.k,v:localStorage.getItem('kv_'+d.k)},e.origin);
+    if(d.hst==='need-token'){window.__src=e.source;window.__ori=e.origin;if(window.__sendTok)window.__sendTok()}
+    if(d.hst==='reload'){try{sessionStorage.setItem('hstUpd','1')}catch(x){}var u=document.getElementById('upd');u.textContent='Updating to the new version…';u.style.display='block';var c2=document.getElementById('snp');if(c2)c2.style.display='none';document.getElementById('spi').style.display='block';sp.style.display='flex';sp.style.opacity=0;requestAnimationFrame(function(){sp.style.opacity=1});setTimeout(function(){location.reload()},700);return}
+    if(d.hst==='snap'&&d.s){localStorage.setItem('hstSnap',JSON.stringify(d.s));if(window.__goLive)window.__goLive()}
+    if(d.hst==='need-pin'){var p=localStorage.getItem('hstpin');if(p&&e.source)e.source.postMessage({hst:'pin',pin:p},e.origin)}}catch(x){}});
+  f.src=EX+(ws?'?p=ws':'');
+  var off=document.getElementById('off');
+  window.addEventListener('offline',function(){off.style.display='block';var x=document.getElementById('snpS');if(x)x.textContent=x.textContent.replace('connecting…','offline')});
+  window.addEventListener('online',function(){off.style.display='none';f.src=f.src});
+})();
+</script>
+
+<script>
+(function(){
+  var ib=document.getElementById('ib'),hp=document.getElementById('hp'),dp=null;
+  var sa=(window.matchMedia&&matchMedia('(display-mode: standalone)').matches)||navigator.standalone===true||document.referrer.indexOf('android-app://')===0;
+  var ios=/iphone|ipad|ipod/i.test(navigator.userAgent);
+  window.__help=function(t,b){document.getElementById('hpt').textContent=t;document.getElementById('hpb').innerHTML=b;hp.style.display='flex'};
+  document.getElementById('hpc').onclick=function(){hp.style.display='none'};
+  function show(){if(sa)return;ib.style.display='flex';window.__fit&&window.__fit()}
+  function hide(){ib.style.display='none';window.__fit&&window.__fit()}
+  window.addEventListener('beforeinstallprompt',function(e){dp=e;hide()});   // Chrome/Edge/Samsung show their own Install button
+  window.addEventListener('appinstalled',function(){sa=true;hide()});
+  document.getElementById('ibx').onclick=hide;   // hidden for this visit only – shows again next time
+  document.getElementById('ibi').onclick=function(){
+    if(!dp&&!ios&&!window.__w1){window.__w1=1;waitDp(10).then(function(){document.getElementById('ibi').onclick();window.__w1=0});return}
+    if(!dp&&/Android/i.test(navigator.userAgent)){var a=document.createElement('a');a.href='hst-live-yard.apk';a.download='HST Live Yard.apk';document.body.appendChild(a);a.click();a.remove();window.__help('Installing…','<ol><li>The app is downloading (1 MB)</li><li>Tap the downloaded file, then <b>Install</b></li><li>If the phone asks, allow <b>Install unknown apps</b> for Chrome – once only</li></ol>');return}
+    if(dp){dp.prompt();dp.userChoice.then(function(c){if(c&&c.outcome==='accepted')hide();dp=null});return}
+    if(ios)window.__help('Install on iPhone','<ol><li>Open this page in <b>Safari</b></li><li>Tap the <b>Share</b> button (square with arrow)</li><li>Tap <b>Add to Home Screen</b> → <b>Add</b></li></ol>');
+    else if(!/Android|Mobi/i.test(navigator.userAgent))window.__help('Install on this computer','<p style="margin:0 0 8px">Chrome did not offer the install – usually it means <b>HST Live Yard is already installed</b> on this computer. Look in the Start menu / desktop for <b>HST Live Yard</b>, or click <b>Open in app</b> at the right end of the address bar.</p><p style="margin:0 0 4px">Not installed yet?</p><ol><li>Click Chrome menu <b>⋮</b> (top right)</li><li><b>Cast, save and share</b> → <b>Install page as app…</b></li><li>Click <b>Install</b></li></ol>');
+    else window.__help('Install the app','<ol><li>Tap Chrome menu <b>⋮</b> (top right)</li><li>Tap <b>Install app</b> or <b>Add to Home screen</b></li><li>Tap <b>Install</b>, then open <b>HST Live Yard</b> from your home screen</li></ol>');
+  };
+  function waitDp(n){if(dp||n<=0)return Promise.resolve(dp);return new Promise(function(r){setTimeout(function(){r(waitDp(n-1))},200)})}
+  if(navigator.getInstalledRelatedApps)navigator.getInstalledRelatedApps().then(function(l){if(l&&l.length){sa=true;hide()}}).catch(function(){});
+  var mob=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+  if(!sa&&mob)setTimeout(function(){if(!sa&&!dp)show()},ios?1500:5000);   // only phones where the browser gives no install button
+})();
+</script>
+<script type="module">
+import {initializeApp} from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
+import {getMessaging,getToken,onMessage,isSupported} from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging.js';
+const nb=document.getElementById('nb');let tok=null,reg=null;
+window.__sendTok=function(){try{if(tok&&window.__src)window.__src.postMessage({hst:'push-token',token:tok},window.__ori)}catch(e){}};
+async function start(ask){
+  try{
+    if(!('serviceWorker' in navigator))return;
+    reg=reg||await navigator.serviceWorker.register('sw.js',{updateViaCache:'none'});
+    try{reg.update()}catch(e){}
+    if(!('Notification' in window)||!(await isSupported()))return;
+    let p=Notification.permission;
+    if(p==='default'){if(!ask){nbShow('🔔 Turn on alerts');return}p=await Notification.requestPermission()}
+    if(p==='denied'){nbShow('🔕 Alerts blocked – tap to fix');if(ask)blockedHelp();return}
+    if(p!=='granted'){nbShow('🔔 Turn on alerts');return}
+    nb.style.display='none';
+    await navigator.serviceWorker.ready;
+    const app=initializeApp(CFG);const m=getMessaging(app);
+    tok=await getToken(m,{vapidKey:VK,serviceWorkerRegistration:reg});
+    onMessage(m,p=>{try{const n=(p&&p.notification)||{},w=(p&&p.data)||{};reg.showNotification(n.title||w.title||'HST Live Yard',{body:n.body||w.body||'',icon:'icon-192.png?v=2',badge:'badge-96.png',tag:w.tag||n.tag||('m'+Date.now()),renotify:true,vibrate:[300,100,300,100,300]})}catch(e){}});   // app open: still show the phone alert
+    window.__sendTok();
+  }catch(e){console.log('push',e)}
+}
+const CFG={"apiKey":"AIzaSyB4S6ps5qJofmnjdjr1sYevf-BKMnY9OLc","authDomain":"hst-live-yard.firebaseapp.com","projectId":"hst-live-yard","storageBucket":"hst-live-yard.firebasestorage.app","messagingSenderId":"229728292239","appId":"1:229728292239:web:d3f39b7cef6a8820738ffa"},VK='BLC6mWYhhpEQYvMzPtZOG52lAUWjC0E6L8fuXmyffYm5pO_QwyPb06r1xoBSBIL8Ot-fOwmSB8bQIBp5Lt88cw4';
+function nbShow(t){nb.textContent=t;nb.style.display='block'}
+function blockedHelp(){const sa=matchMedia('(display-mode: standalone)').matches;window.__help('Allow alerts',sa?'<ol><li>Long-press the <b>HST Live Yard</b> icon on your home screen</li><li>Tap <b>App info</b> (ⓘ) → <b>Notifications</b></li><li>Turn <b>Allow notifications</b> ON, then open the app again</li></ol>':'<ol><li>Tap the icon left of the address bar (🔒 / ⚙)</li><li>Tap <b>Permissions</b> or <b>Site settings</b> → <b>Notifications</b></li><li>Choose <b>Allow</b>, then reload the page</li></ol>')}
+nb.addEventListener('click',()=>{if('Notification' in window&&Notification.permission==='denied')blockedHelp();else start(true)});
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&'Notification' in window&&Notification.permission!=='granted')start(false)});
+
+if('serviceWorker' in navigator){let had=!!navigator.serviceWorker.controller,rl=false;navigator.serviceWorker.addEventListener('controllerchange',()=>{if(had&&!rl){rl=true;location.reload()}had=true});
+ document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&reg)try{reg.update()}catch(e){}});setInterval(()=>{if(reg)try{reg.update()}catch(e){}},30*60*1000)}
+start(false);
+</script>
+</body>
+</html>
