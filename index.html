@@ -44,7 +44,7 @@ html,body{margin:0;height:100%;background:#1B201B;overflow:hidden}
 #snp .st{display:flex;align-items:center;gap:8px;font-size:11.5px;color:#5E6A62;margin-bottom:10px;text-transform:uppercase;letter-spacing:.08em;font-weight:700}
 #snp .st .lb{color:#067327;white-space:nowrap}
 #snp .st .rt{margin-left:auto;text-transform:none;letter-spacing:0;font-weight:600;text-align:right}#snp .st .rt.off{color:#C9302C}
-#snp .dot{flex:0 0 auto;width:9px;height:9px;border-radius:50%;background:#E39B26;box-shadow:0 0 0 3px rgba(227,155,38,.25);animation:pl 1.4s ease-in-out infinite}
+#snp .dot{flex:0 0 auto;width:9px;height:9px;border-radius:50%;background:#2E9B57;box-shadow:0 0 0 3px rgba(46,155,87,.25);animation:pl 1.4s ease-in-out infinite}
 #snp .dot.off{background:#C9302C;box-shadow:0 0 0 3px rgba(201,48,44,.18);animation:none}
 @keyframes pl{50%{opacity:.35}}
 #snp .big{display:flex;align-items:center;gap:12px}
@@ -227,11 +227,11 @@ var im=document.querySelector('#spl img');if(im&&!im.complete)im.addEventListene
     return k<=0?hm:k===1?'yesterday '+hm:d.getDate()+' '+MON[d.getMonth()]+(d.getFullYear()!==n.getFullYear()?' '+d.getFullYear():'')+' '+hm}
   function e1(t){return String(t).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
   /* "Sinotruk · 187 trucks 88% available · 23 down · 11 ready HST 37 · JV 150"  ->  name, %, trucks, down, ready, HST, JV */
-  function pf(x){x=String(x==null?'':x).replace(/\s+/g,' ').trim();var g=function(re){var m=x.match(re);return m?+m[1]:null},nm=(x.match(/^[^\d·•%]+/)||[''])[0].replace(/[\s·•\-–]+$/,'').trim();
+  function pf(x){x=String(x==null?'':x).replace(/([a-z%])(?=[A-Z0-9])/g,'$1 ').replace(/(\d)(?=[A-Za-z])/g,'$1 ').replace(/\s+/g,' ').trim();var g=function(re){var m=x.match(re);return m?+m[1]:null},nm=(x.match(/^[^\d·•%]+/)||[''])[0].replace(/[\s·•\-–]+$/,'').trim();
     return {raw:x,nm:nm,pc:g(/(\d+)\s*%/),tot:g(/(\d+)\s*trucks?\b/i),dn:g(/(\d+)\s*down\b/i),rd:g(/(\d+)\s*ready\b/i),hst:g(/\bHST\s*(\d+)/i),jv:g(/\bJV\s*(\d+)/i)}}
   function row(x){var o=pf(x);if(!o.raw)return '';var cl=o.pc==null?'':o.pc>=85?'':o.pc>=75?' a':' r',a=[],m=[];
     if(o.tot!=null)a.push('<b>'+o.tot+'</b> trucks');if(o.dn!=null)a.push('<b>'+o.dn+'</b> down');if(o.rd!=null)a.push('<b>'+o.rd+'</b> ready');
-    if(o.hst!=null)m.push('HST '+o.hst);if(o.jv!=null)m.push('JV '+o.jv);
+    var ad=false;try{ad=!!(JSON.parse(localStorage.getItem('hstSnap')||'null')||{}).adm}catch(z){}if(ad){if(o.hst!=null)m.push('HST '+o.hst);if(o.jv!=null)m.push('JV '+o.jv);if(m.length)m=['Owner: '+m.join(' · ')]}
     var d=(a.length?'<span>'+a.join(' · ')+'</span>':'')+(m.length?'<span class="x">'+m.join(' · ')+'</span>':'');
     if(!d&&o.pc==null)return '<div class="fl"><span class="n" style="grid-column:1/4">'+e1(o.raw)+'</span></div>';
     return '<div class="fl'+cl+'"><span class="n">'+e1(o.nm||o.raw)+'</span>'+(o.pc!=null?'<span class="mb"><i style="width:'+Math.min(100,o.pc)+'%"></i></span><span class="p'+cl+'">'+o.pc+'%</span>':'<span class="mb"></span><span></span>')+(d?'<span class="d">'+d+'</span>':'')+'</div>'}
