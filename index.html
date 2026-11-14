@@ -264,7 +264,9 @@ var im=document.querySelector('#spl img');if(im&&!im.complete)im.addEventListene
   if(window.__drawSp)window.__drawSp();
   window.__goLive=hideSp;
   f.addEventListener('load',function(){if(!waitLive)setTimeout(hideSp,900)});
-  window.addEventListener('message',function(e){var h='';try{h=new URL(e.origin).hostname}catch(x){}if(!/\.googleusercontent\.com$/.test(h))return;var d=e.data||{};
+  /* only our own app frame may talk to this page (a page of another Apps Script cannot read the saved login) */
+  function ownFrame(src){try{var w=src,fw=f.contentWindow;for(var i=0;i<5&&w;i++){if(w===fw)return true;if(w.parent===w)break;w=w.parent}}catch(x){}return false}
+  window.addEventListener('message',function(e){var h='';try{h=new URL(e.origin).hostname}catch(x){}if(!/\.googleusercontent\.com$/.test(h))return;if(!ownFrame(e.source))return;var d=e.data||{};
     try{if(d.hst==='pin-save'&&d.pin)localStorage.setItem('hstpin',String(d.pin));if(d.hst==='pin-clear')localStorage.removeItem('hstpin');
     if(d.hst==='kv-set'&&d.k)localStorage.setItem('kv_'+d.k,String(d.v));
     if(d.hst==='kv-get'&&d.k&&e.source)e.source.postMessage({hst:'kv',k:d.k,v:localStorage.getItem('kv_'+d.k)},e.origin);
