@@ -37,6 +37,7 @@ html,body{margin:0;height:100%;background:#1B201B;overflow:hidden}
 #spt{font:700 20px/1 var(--c);letter-spacing:.2em;white-space:nowrap}
 #snpS{display:none;align-items:center;gap:7px;font:500 13px/1 var(--f);white-space:nowrap}
 #snpS.on{display:flex}
+@media(max-width:359px){#snpS{font-size:12px;gap:5px}}
 #snpS i{flex:0 0 auto;width:7px;height:7px;border-radius:50%;background:#9BE3A8}
 #snpS.off i{background:#FFC864}
 #sbg{position:relative;display:flex;align-items:flex-end;gap:16px;margin-top:16px}
@@ -66,14 +67,14 @@ html,body{margin:0;height:100%;background:#1B201B;overflow:hidden}
 #snp .fl.a .h em{color:#9A5F08}#snp .fl.r .h em{color:#C9302C}
 #snp .tk{display:grid;grid-template-columns:repeat(var(--n,47),1fr);align-items:end;gap:4px 2.5px;margin:12px 2px 0}
 #snp .tk i{height:var(--tk);transform:skewX(-17deg);background:#E3E8E0}
-#snp .tk i.a,#snp .kv i.a{background:#067327}#snp .tk i.r,#snp .kv i.r{background:#4FA36A}#snp .tk i.d,#snp .kv i.d{background:#D9730B}
-#snp .tk i.d{height:calc(var(--tk)*.6)}
+#snp .tk i.a,#snp .kv i.a{background:#067327}#snp .tk i.r,#snp .kv i.r{background:#4FA36A}#snp .tk i.d,#snp .kv i.d{background:#D9730B}#snp .tk i.x,#snp .kv i.x{background:#C9302C}
+#snp .tk i.d,#snp .tk i.x{height:calc(var(--tk)*.6)}
 #snp .mb{height:8px;margin:12px 0 0 2px;background:#E3E8E0;transform:skewX(-17deg);overflow:hidden}
 #snp .mb i{display:block;height:100%;background:#2E9B57}#snp .fl.a .mb i{background:#E39B26}#snp .fl.r .mb i{background:#C9302C}
 #snp .kv{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 16px;margin-top:11px;font:400 13.5px/1.2 var(--f);color:#3A443C}
 #snp .kv span{white-space:nowrap}
 #snp .kv i{display:inline-block;width:6px;height:13px;margin:0 7px 0 2px;transform:skewX(-17deg);vertical-align:-1px}
-#snp .kv i.d{height:8px}
+#snp .kv i.d,#snp .kv i.x{height:8px}
 #snp .kv b{font:600 19px/1 var(--c);color:#1B201B;margin-right:5px;font-variant-numeric:tabular-nums}
 
 #snp .lg{margin-top:15px;padding-top:11px;border-top:1px solid #D5DBD2;font:400 13px/1.2 var(--f);color:#5E6A62}
@@ -174,17 +175,17 @@ fit();
   function e1(t){return String(t).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
   /* "Sinotruk · 187 trucks 88% available · 23 down · 11 ready HST 37 · JV 150"  ->  name, %, trucks, down, ready, HST, JV */
   function pf(x){x=String(x==null?'':x).replace(/([a-z%])(?=[A-Z0-9])/g,'$1 ').replace(/(\d)(?=[A-Za-z])/g,'$1 ').replace(/\s+/g,' ').trim();var g=function(re){var m=x.match(re);return m?+m[1]:null},nm=(x.match(/^[^\d·•%]+/)||[''])[0].replace(/[\s·•\-–]+$/,'').trim();
-    return {raw:x,nm:nm,pc:g(/(\d+)\s*%/),tot:g(/(\d+)\s*trucks?\b/i),dn:g(/(\d+)\s*down\b/i),rd:g(/(\d+)\s*ready\b/i),hst:g(/\bHST\s*(\d+)/i),jv:g(/\bJV\s*(\d+)/i)}}
+    return {raw:x,nm:nm,pc:g(/(\d+)\s*%/),tot:g(/(\d+)\s*trucks?\b/i),dn:g(/(\d+)\s*down\b/i),ac:g(/(\d+)\s*accident\b/i),rd:g(/(\d+)\s*ready\b/i),hst:g(/\bHST\s*(\d+)/i),jv:g(/\bJV\s*(\d+)/i)}}
   var TKN=0;
   function rep(h,n){var s='';for(var i=0;i<n;i++)s+=h;return s}
   /* one mark per truck: working, ready in the yard, down - only when the numbers are complete and make sense */
-  function marks(o){if(o.tot==null||o.dn==null||o.tot<1||o.tot>320||o.dn>o.tot)return null;var rd=Math.min(o.rd||0,o.tot-o.dn);return {w:o.tot-o.dn-rd,r:rd,d:o.dn}}
+  function marks(o){if(o.tot==null||o.dn==null||o.tot<1||o.tot>320||o.dn>o.tot)return null;var rd=Math.min(o.rd||0,o.tot-o.dn),ac=o.ac!=null&&o.ac>0&&o.ac<=o.dn?o.ac:0;return {w:o.tot-o.dn-rd,r:rd,d:o.dn-ac,x:ac}}
   function row(x){var o=pf(x);if(!o.raw)return '';var cl=o.pc==null?'':o.pc>=85?'':o.pc>=75?' a':' r',a='',m=[],k=TKN?marks(o):null,g='';
-    if(k)a='<span><i class="a"></i><b>'+k.w+'</b>running</span><span><i class="r"></i><b>'+k.r+'</b>ready in yard</span><span><i class="d"></i><b>'+k.d+'</b>down</span>';
-    else{if(o.rd!=null)a+='<span><b>'+o.rd+'</b>ready in yard</span>';if(o.dn!=null)a+='<span><b>'+o.dn+'</b>down</span>'}
+    if(k)a='<span><i class="a"></i><b>'+k.w+'</b>running</span><span><i class="r"></i><b>'+k.r+'</b>ready in yard</span><span><i class="d"></i><b>'+k.d+'</b>down</span>'+(k.x?'<span><i class="x"></i><b>'+k.x+'</b>accident</span>':'');
+    else{var a9=o.ac!=null&&o.dn!=null&&o.ac>0&&o.ac<=o.dn?o.ac:0;if(o.rd!=null)a+='<span><b>'+o.rd+'</b>ready in yard</span>';if(o.dn!=null)a+='<span><b>'+(o.dn-a9)+'</b>down</span>';if(a9)a+='<span><b>'+a9+'</b>accident</span>'}
     var ad=false;try{ad=!!(JSON.parse(localStorage.getItem('hstSnap')||'null')||{}).adm}catch(z){}if(ad){if(o.hst!=null)m.push('HST '+o.hst);if(o.jv!=null)m.push('JV '+o.jv)}
     if(!a&&o.pc==null&&o.tot==null)return '<div class="fl"><div class="h"><span><b>'+e1(o.raw)+'</b></span></div></div>';
-    if(k){g='<div class="tk" role="img" aria-label="'+k.w+' running, '+k.r+' ready in yard, '+k.d+' down">'+rep('<i class="a"></i>',k.w)+rep('<i class="r"></i>',k.r)+rep('<i class="d"></i>',k.d)+'</div>'}
+    if(k){g='<div class="tk" role="img" aria-label="'+k.w+' running, '+k.r+' ready in yard, '+k.d+' down'+(k.x?', '+k.x+' accident':'')+'">'+rep('<i class="a"></i>',k.w)+rep('<i class="r"></i>',k.r)+rep('<i class="d"></i>',k.d)+rep('<i class="x"></i>',k.x)+'</div>'}
     else if(o.pc!=null)g='<div class="mb"><i style="width:'+Math.min(100,o.pc)+'%"></i></div>';
     return '<div class="fl'+cl+'"><div class="h"><span><b>'+e1(o.nm||o.raw)+'</b>'+(o.tot!=null?'<small>'+o.tot+' trucks</small>':'')+(m.length?'<small>'+m.join(', ')+'</small>':'')+'</span>'+(o.pc!=null?'<div>'+(cl?'<u>Below target</u>':'')+'<em>'+o.pc+'%</em></div>':'')+'</div>'+g+(a?'<div class="kv">'+a+'</div>':'')+'</div>'}
   var ldCap=false,SNON=false;
