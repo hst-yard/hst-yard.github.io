@@ -217,8 +217,8 @@ fit();
   /* only our own app frame may talk to this page (a page of another Apps Script cannot read the saved login) */
   function ownFrame(src){try{var w=src,fw=f.contentWindow;for(var i=0;i<5&&w;i++){if(w===fw)return true;if(w.parent===w)break;w=w.parent}}catch(x){}return false}
   window.addEventListener('message',function(e){var h='';try{h=new URL(e.origin).hostname}catch(x){}if(!/\.googleusercontent\.com$/.test(h))return;if(!ownFrame(e.source))return;var d=e.data||{};
-    try{if(d.hst==='pin-save'&&d.pin)localStorage.setItem('hstpin',String(d.pin));if(d.hst==='pin-clear')localStorage.removeItem('hstpin');
-    if(d.hst==='kv-set'&&d.k)localStorage.setItem('kv_'+d.k,String(d.v));
+    try{if(d.hst==='pin-save'&&d.pin){localStorage.setItem('hstpin',String(d.pin));idbSync()}if(d.hst==='pin-clear'){localStorage.removeItem('hstpin');idbSync()}
+    if(d.hst==='kv-set'&&d.k){localStorage.setItem('kv_'+d.k,String(d.v));if(d.k==='hstDA')localStorage.setItem('kv_hstDA_t',String(Date.now()))}
     if(d.hst==='kv-get'&&d.k&&e.source)e.source.postMessage({hst:'kv',k:d.k,v:localStorage.getItem('kv_'+d.k)},e.origin);
     if(d.hst==='need-token'){window.__src=e.source;window.__ori=e.origin;if(window.__sendTok)window.__sendTok()}
     if(d.hst==='need-rel'){window.__rsrc=e.source;window.__rori=e.origin;relSend()}
@@ -232,6 +232,12 @@ fit();
   var OP='';try{var mt=/[?&]t=([A-Za-z0-9]{5,9})(?:&|$)/.exec(location.search);if(mt){OP=mt[1].toUpperCase();history.replaceState(null,'',location.pathname+location.search.replace(/([?&])t=[^&]*&?/,'$1').replace(/[?&]$/,'')+location.hash)}}catch(x){}
   window.__sendOpen=function(){if(OP&&window.__osrc){try{window.__osrc.postMessage({hst:'open',p:OP},window.__oori);OP=''}catch(x){}}};
   try{if('serviceWorker' in navigator)navigator.serviceWorker.addEventListener('message',function(e){var d=e.data||{};if(d.hstOpen){OP=String(d.hstOpen).toUpperCase();window.__sendOpen()}})}catch(x){}
+
+  /* v426: the service worker fetches the board when an alert arrives – it needs the saved login + the app address; the fresh board is handed to the app when it opens */
+  function idbOpen(cb){try{var r=indexedDB.open('hst',1);r.onupgradeneeded=function(){r.result.createObjectStore('kv')};r.onsuccess=function(){cb(r.result)}}catch(x){}}
+  function idbSync(){idbOpen(function(db){try{var t=db.transaction('kv','readwrite'),s=t.objectStore('kv'),p=localStorage.getItem('hstpin');if(p&&!ws){s.put(p,'cred');s.put(EXS[cur],'ex')}else if(!p){s.delete('cred');s.delete('snap')}}catch(x){}})}
+  function idbSnap(){idbOpen(function(db){try{var q=db.transaction('kv').objectStore('kv').get('snap');q.onsuccess=function(){var o=q.result;if(o&&o.v&&o.t>(+localStorage.getItem('kv_hstDA_t')||0)&&localStorage.getItem('hstpin')){localStorage.setItem('kv_hstDA',o.v);localStorage.setItem('kv_hstDA_t',String(o.t))}}}catch(x){}})}
+  idbSnap();setTimeout(idbSync,1500);setTimeout(idbSync,20000);
   f.src=relUrl(cur);relApply(false);setInterval(function(){relApply(false)},300000);document.addEventListener('visibilitychange',function(){if(!document.hidden)relApply(false)});
   var off=document.getElementById('off');
   if(navigator.onLine===false)off.style.display='block';
