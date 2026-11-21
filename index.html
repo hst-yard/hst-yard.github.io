@@ -217,6 +217,7 @@ fit();
   /* only our own app frame may talk to this page (a page of another Apps Script cannot read the saved login) */
   function ownFrame(src){try{var w=src,fw=f.contentWindow;for(var i=0;i<5&&w;i++){if(w===fw)return true;if(w.parent===w)break;w=w.parent}}catch(x){}return false}
   window.addEventListener('message',function(e){var h='';try{h=new URL(e.origin).hostname}catch(x){}if(!/\.googleusercontent\.com$/.test(h))return;if(!ownFrame(e.source))return;var d=e.data||{};
+    try{window.__isrc=e.source;window.__iori=e.origin;if(d.hst==='go-ws'){var q=String(d.q||'ws');if(!/^ws(&sv=[A-Za-z0-9]{5,9})?$/.test(q))q='ws';location.assign(location.pathname+'?'+q);return}if((d.hst==='back-ok'||d.hst==='back-exit')&&window.__bkR){window.__bkR(d.hst);return}}catch(x){}
     try{if(d.hst==='pin-save'&&d.pin){localStorage.setItem('hstpin',String(d.pin));idbSync()}if(d.hst==='pin-clear'){localStorage.removeItem('hstpin');idbSync()}
     if(d.hst==='kv-set'&&d.k){localStorage.setItem('kv_'+d.k,String(d.v));if(d.k==='hstDA')localStorage.setItem('kv_hstDA_t',String(Date.now()))}
     if(d.hst==='kv-get'&&d.k&&e.source)e.source.postMessage({hst:'kv',k:d.k,v:localStorage.getItem('kv_'+d.k)},e.origin);
@@ -310,5 +311,15 @@ if('serviceWorker' in navigator){let had=!!navigator.serviceWorker.controller,rl
  document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&reg)try{reg.update()}catch(e){}});setInterval(()=>{if(reg)try{reg.update()}catch(e){}},30*60*1000)}
 start(false);
 </script>
+<script>/* phone back key (22 Nov 2026): one guard step so the back key closes what is open in the app or goes back to the dashboard; on the dashboard it leaves the app */
+(function(){try{if(/[?&#]ws\b/.test(location.search+location.hash))return;
+var G=function(){try{history.pushState({hstG:1},'')}catch(x){}};
+if(!(history.state&&history.state.hstG))G();
+addEventListener('popstate',function(e){try{if(e.state&&e.state.hstG)return;
+ if(!window.__isrc){history.back();return}
+ var done=0;window.__bkR=function(k){if(done)return;done=1;window.__bkR=null;if(k==='back-ok')G();else history.back()};
+ try{window.__isrc.postMessage({hst:'back'},window.__iori||'*')}catch(x){}
+ setTimeout(function(){if(window.__bkR)window.__bkR('back-exit')},800)}catch(x){}});
+}catch(x){}})();</script>
 </body>
 </html>
