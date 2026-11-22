@@ -15,7 +15,7 @@ self.addEventListener('push',e=>{try{const d=e.data?e.data.json():null,n=d&&d.no
   const p=self.registration.showNotification(String(n.title),o).catch(()=>self.registration.showNotification(String(n.title),{body:String(n.body||''),icon:n.icon,badge:n.badge,data:{FCM_MSG:d}}));
   e.stopImmediatePropagation();e.waitUntil(Promise.all([p,hstPre()]))}catch(x){}});
 try{firebase.initializeApp({"apiKey":"AIzaSyB4S6ps5qJofmnjdjr1sYevf-BKMnY9OLc","authDomain":"hst-live-yard.firebaseapp.com","projectId":"hst-live-yard","storageBucket":"hst-live-yard.firebasestorage.app","messagingSenderId":"229728292239","appId":"1:229728292239:web:d3f39b7cef6a8820738ffa"});firebase.messaging();}catch(e){}
-const C='hst-yard-v32';
+const C='hst-yard-v33';
 const FILES=['./','index.html','manifest.webmanifest','icon-192.png','icon-512.png','maskable-512.png','apple-touch-icon.png','favicon-32.png','badge-96.png','logo-mark.png','logo-full.png','logo-full-white.png','f/bc600.woff2','f/bc700.woff2','install/'];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(C).then(c=>c.addAll(FILES)));self.skipWaiting();});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x!==C).map(x=>caches.delete(x)))));self.clients.claim();});
@@ -31,6 +31,10 @@ self.addEventListener('fetch',e=>{
     e.respondWith(saved().then(h=>{const n=fetch(e.request.mode==='navigate'?e.request.url:e.request,{cache:'no-cache'}).then(put);if(h){e.waitUntil(n.catch(()=>{}));return h;}return n;}));
     return;
   }
-  // the page: the saved page at once (a slow line must not hold the app for seconds), refreshed behind for the next opening; no saved page yet = from the network
-  e.respondWith(saved().then(h=>{const n=fetch(e.request.mode==='navigate'?e.request.url:e.request,{cache:'no-cache'}).then(put);if(h){e.waitUntil(n.catch(()=>{}));return h;}return n;}));
+  // the page: the saved page at once (a slow line must not hold the app for seconds), refreshed behind for the next opening.
+  // Not saved yet (e.g. /install without the slash, /guide/) = the browser loads it itself, so redirects and new pages always work.
+  e.respondWith(saved().then(h=>{
+    if(h){e.waitUntil(fetch(u.href,{cache:'no-cache'}).then(r=>{if(r&&r.ok&&!r.redirected)return caches.open(C).then(c=>c.put(e.request,r));}).catch(()=>{}));return h;}
+    return fetch(e.request);
+  }).catch(()=>fetch(e.request)));
 });
