@@ -22,6 +22,8 @@ self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(k=>Promise.a
 self.addEventListener('fetch',e=>{
   const u=new URL(e.request.url);
   if(u.origin!==location.origin||e.request.method!=='GET') return;
+  // video + PDF guide: straight from the network (never saved – the video is 12 MB and plays in parts)
+  if(u.pathname.indexOf('/media/')===0) return;
   const put=r=>{if(r&&r.ok){const cp=r.clone();caches.open(C).then(c=>c.put(e.request,cp));}return r;};
   const saved=()=>caches.match(e.request,{ignoreSearch:true});
   // pictures and fonts: the saved copy at once, refreshed behind – a slow line must not leave the logo or the font empty

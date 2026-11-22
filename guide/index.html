@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>HST Live Yard – video and guide</title>
+<meta name="theme-color" content="#1B201B">
+<link rel="icon" href="/favicon-32.png">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:#1B201B;color:#1B201B;min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:20px}
+.c{background:#fff;border-radius:20px;max-width:640px;width:100%;padding:22px 18px;box-shadow:0 20px 50px rgba(0,0,0,.35)}
+.h{display:flex;align-items:center;gap:12px;margin-bottom:6px}.h img{height:28px}.h b{font-size:19px}
+.s{border:1px solid #e3e8e4;border-radius:14px;padding:14px;margin-top:14px}
+.s b{font-size:16px}.d{font-size:13px;color:#5E6A62;margin:4px 0 12px;line-height:1.45}
+video{width:100%;aspect-ratio:16/9;border-radius:10px;background:#000;display:block}
+.r{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.b{display:inline-flex;align-items:center;justify-content:center;border-radius:12px;padding:12px 16px;font-weight:700;font-size:15px;text-decoration:none;min-height:44px}
+.p{background:#2E9B57;color:#fff}.o{background:#eef1ee;color:#1B201B}
+.f{color:#8A958D;font-size:11px;margin-top:18px;text-align:center}
+</style>
+</head><body>
+<div class="c">
+  <div class="h"><img src="/logo-full.png" alt="HST"><b>HST Live Yard</b></div>
+  <div class="s" id="v">
+    <b>🎬 Intro video</b>
+    <div class="d">6 minutes · what the system is, how each team uses it, preventive maintenance and what we all gain. Please watch to the end.</div>
+    <video controls playsinline preload="none" poster="/media/intro-poster.jpg" src="/media/hst-live-yard-intro.mp4"></video>
+    <div class="r"><a class="b o" id="dv" href="/media/hst-live-yard-intro.mp4" download="HST Live Yard - intro video.mp4">⬇ Download video (12 MB)</a></div>
+  </div>
+  <div class="s" id="g">
+    <b>📘 Install guide (PDF)</b>
+    <div class="d">One page · install the app on Android and iPhone, log in, PIN and rules. Print it or send it to a new worker.</div>
+    <div class="r"><a class="b p" href="/media/hst-live-yard-install-guide.pdf" target="_blank" rel="noopener">📖 Open</a><a class="b o" id="dp" href="/media/hst-live-yard-install-guide.pdf" download="HST Live Yard - install guide.pdf">⬇ Download</a></div>
+  </div>
+  <div class="r" style="justify-content:center;margin-top:16px"><a class="b o" href="/install/">⬇ Install app</a><a class="b o" href="/">Open HST Live Yard</a></div>
+  <div class="f">© 2026 H. Safieddine Transport Ltd</div>
+</div>
+<script>
+(function(){var h=location.hash;if(h==='#dl-video'||h==='#dl-pdf'){var a=document.getElementById(h==='#dl-video'?'dv':'dp');document.getElementById(h==='#dl-video'?'v':'g').scrollIntoView();setTimeout(function(){try{a.click()}catch(e){}},400)}})();
+</script>
+</body></html>
