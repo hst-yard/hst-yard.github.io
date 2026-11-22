@@ -29,10 +29,6 @@ self.addEventListener('fetch',e=>{
     e.respondWith(saved().then(h=>{const n=fetch(e.request,{cache:'no-cache'}).then(put);if(h){e.waitUntil(n.catch(()=>{}));return h;}return n;}));
     return;
   }
-  // the page: fresh from the network; after 3 s without an answer, or with no network, the saved page
-  e.respondWith(new Promise((res,rej)=>{
-    let done=false;const fin=r=>{if(!done){done=true;res(r);}};
-    const t=setTimeout(()=>{saved().then(h=>{if(h)fin(h);});},3000);
-    fetch(e.request,{cache:'no-cache'}).then(put).then(r=>{clearTimeout(t);fin(r);},()=>{clearTimeout(t);saved().then(h=>{if(h)fin(h);else if(!done){done=true;rej(new TypeError('offline'));}});});
-  }));
+  // the page: the saved page at once (a slow line must not hold the app for seconds), refreshed behind for the next opening; no saved page yet = from the network
+  e.respondWith(saved().then(h=>{const n=fetch(e.request,{cache:'no-cache'}).then(put);if(h){e.waitUntil(n.catch(()=>{}));return h;}return n;}));
 });
