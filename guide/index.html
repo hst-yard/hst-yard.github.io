@@ -21,6 +21,7 @@ video{width:100%;aspect-ratio:16/9;border-radius:10px;background:#000;display:bl
 </style>
 </head><body>
 <div class="c">
+  <a class="b o" id="bk" href="/" style="margin-bottom:12px;padding:8px 14px;min-height:38px;font-size:14px">‹ Back to the app</a>
   <div class="h"><img src="/logo-full.png" alt="HST"><b>HST Live Yard</b></div>
   <div class="s" id="v">
     <b>🎬 Intro video</b>
@@ -37,6 +38,7 @@ video{width:100%;aspect-ratio:16/9;border-radius:10px;background:#000;display:bl
   <div class="f">© 2026 H. Safieddine Transport Ltd</div>
 </div>
 <script>
-(function(){var h=location.hash;if(h==='#dl-video'||h==='#dl-pdf'){var a=document.getElementById(h==='#dl-video'?'dv':'dp');document.getElementById(h==='#dl-video'?'v':'g').scrollIntoView();setTimeout(function(){try{a.click()}catch(e){}},400)}})();
+document.getElementById('bk').onclick=function(e){if(history.length>1&&document.referrer.indexOf(location.origin)===0){e.preventDefault();history.back()}};
+(function(){var h=location.hash;if(h==='#g'){document.getElementById('g').scrollIntoView();return}if(h==='#dl-video'||h==='#dl-pdf'){var a=document.getElementById(h==='#dl-video'?'dv':'dp');document.getElementById(h==='#dl-video'?'v':'g').scrollIntoView();setTimeout(function(){try{a.click()}catch(e){}},400)}})();
 </script>
 </body></html>
