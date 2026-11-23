@@ -330,5 +330,36 @@ addEventListener('popstate',function(e){try{if(e.state&&e.state.hstG)return;
  try{window.__isrc.postMessage({hst:'back'},window.__iori||'*')}catch(x){}
  setTimeout(function(){if(window.__bkR)window.__bkR('back-exit')},800)}catch(x){}});
 }catch(x){}})();</script>
+<style>
+#qbB{position:fixed;left:50%;bottom:calc(22px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:50;display:none;border:0;border-radius:28px;background:#C9302C;color:#fff;font:700 16px/1 Arial,sans-serif;padding:15px 22px;box-shadow:0 4px 14px rgba(0,0,0,.25);cursor:pointer}
+body.spOn #qbB.ok{display:block}
+#qbO{position:fixed;inset:0;z-index:60;background:rgba(0,0,0,.45);display:none;align-items:flex-end;justify-content:center}
+#qbO.on{display:flex}
+#qbF{background:#fff;width:100%;max-width:480px;max-height:92vh;overflow:auto;border-radius:16px 16px 0 0;padding:16px 16px calc(16px + env(safe-area-inset-bottom));font:400 15px/1.35 Arial,sans-serif;color:#1B201B;box-sizing:border-box}
+#qbF h3{margin:0 0 4px;font-size:18px;color:#C9302C}#qbF p{margin:0 0 10px;color:#555;font-size:13px}
+#qbF label{display:block;font-weight:700;font-size:13px;margin:8px 0 3px}
+#qbF input,#qbF select{width:100%;box-sizing:border-box;font:400 16px Arial,sans-serif;padding:10px;border:1px solid #bbb;border-radius:9px;background:#fff;color:#1B201B}
+#qbF .r{display:flex;gap:8px;margin-top:14px}#qbF .r button{flex:1;border:0;border-radius:10px;padding:13px;font:700 15px Arial,sans-serif;cursor:pointer}
+#qbS{background:#C9302C;color:#fff}#qbX{background:#e8e8e8;color:#333}#qbE{color:#C9302C;font-size:13px;min-height:16px;margin-top:6px}
+</style>
+<button id="qbB" type="button">🚨 Report road breakdown</button>
+<div id="qbO" role="dialog" aria-label="Report road breakdown"><form id="qbF" autocomplete="off"><h3>🚨 Road breakdown</h3><p>Fill it while the app opens – it goes straight into the breakdown form, you check and press Report.</p>
+<label for="qbP">Truck</label><input id="qbP" list="qbPl" placeholder="e.g. T1234LA" autocapitalize="characters" required><datalist id="qbPl"></datalist>
+<label for="qbFs">Fault</label><select id="qbFs" required><option value="">– choose the fault –</option><option>Engine overheating</option><option>Engine not starting</option><option>Air leak / brake</option><option>Tyre burst / puncture</option><option>Wheel stud / wheel nut / hub</option><option>Gearbox / clutch</option><option>Electrical / battery</option><option>Fuel / diesel / CNG problem</option><option>Oil leak</option><option>Propeller shaft</option><option>Suspension / spring</option><option>Steering</option><option>Other</option></select>
+<label for="qbW">Where</label><input id="qbW" placeholder="e.g. Ogere toll gate, Lagos-Ibadan" required>
+<label for="qbPh">Driver phone</label><input id="qbPh" type="tel" inputmode="tel" maxlength="16" placeholder="e.g. 08031234567">
+<label for="qbN">What happened</label><input id="qbN" placeholder="short – e.g. smoke from engine">
+<div id="qbE"></div><div class="r"><button id="qbX" type="button">Cancel</button><button id="qbS" type="submit">Continue</button></div></form></div>
+<script>/* Ali 23 Nov 2026: quick breakdown – fill it while the app is still opening */
+(function(){var B=document.getElementById('qbB'),O=document.getElementById('qbO'),F=document.getElementById('qbF'),E=document.getElementById('qbE');
+function lu(){try{return JSON.parse(localStorage.getItem('kv_hstLU')||'null')}catch(e){return null}}
+function ok(){var u=lu();if(!u||!u.role)return false;if(['ADMIN','WORKSHOP','OPS','MGMT'].indexOf(u.role)<0)return false;var a=String(u.access||'').split(',').map(function(x){return x.trim()}).filter(Boolean);return !a.length||a.indexOf('bd')>-1}
+if(ok())B.classList.add('ok');
+B.onclick=function(){try{var d=JSON.parse(localStorage.getItem('kv_hstDA')||'null'),L=document.getElementById('qbPl');if(d&&d.trucks&&!L.children.length)L.innerHTML=d.trucks.filter(function(t){return (t.State||'WORK')==='WORK'}).map(function(t){return '<option value="'+String(t.Plate).replace(/[^A-Z0-9]/gi,'')+'">'}).join('')}catch(e){}O.classList.add('on');setTimeout(function(){document.getElementById('qbP').focus()},50)};
+document.getElementById('qbX').onclick=function(){O.classList.remove('on')};
+F.onsubmit=function(ev){ev.preventDefault();var p=document.getElementById('qbP').value.toUpperCase().replace(/[^A-Z0-9]/g,''),f=document.getElementById('qbFs').value,w=document.getElementById('qbW').value.trim(),ph=document.getElementById('qbPh').value.replace(/[^\d+]/g,''),n=document.getElementById('qbN').value.trim();
+ if(!/^[A-Z]{1,3}\d{2,5}[A-Z]{2}$/.test(p)){E.textContent='Check the truck number';return}if(!f){E.textContent='Choose the fault';return}if(w.length<3){E.textContent='Write where the truck is';return}
+ localStorage.setItem('kv_hstQBD',JSON.stringify({p:p,f:f==='Other'?'':f,w:w,ph:ph,n:n,t:Date.now()}));E.textContent='';O.classList.remove('on');B.textContent='✔ Saved – opening the form…';B.disabled=true};
+})();</script>
 </body>
 </html>
