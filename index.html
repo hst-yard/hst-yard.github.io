@@ -159,7 +159,8 @@ fit();
   var EXS={A:EX,B:'https:\/\/script.google.com/macros/s/AKfycbwiMkbU87UEbzUEnbzEE-lSK6ePbnQzxxJXJ5Qh4xmS1ubhAdWlrgjh_evfPuvzQHm-/exec'},cur='A',REL0=null,relT=0,t0=Date.now();
   try{var pq=/[?&]pre=([01])(?:&|$)/.exec(location.search);if(pq){if(pq[1]==='1')localStorage.setItem('hstPre','1');else localStorage.removeItem('hstPre');history.replaceState(null,'',location.pathname+location.search.replace(/([?&])pre=[01]&?/,'$1').replace(/[?&]$/,'')+location.hash)}}catch(x){}
   try{if(localStorage.getItem('hstRel')==='B'&&EXS.B)cur='B'}catch(x){}
-  function relUrl(k){return EXS[k]+(ws?'?p=ws'+(wsv?'&sv='+wsv:''):'')}
+  function relUrl(k){/* v372 (Ali 23 Nov 2026 – speed): the new version (B) opens from the copy kept on the phone; only the data comes from the server. Escape: ?fast=0 */var fo='';try{fo=localStorage.getItem('hstFastOff')||''}catch(x){}if(k==='B'&&!ws&&fo!=='1')return location.origin+'/app/b.html';return EXS[k]+(ws?'?p=ws'+(wsv?'&sv='+wsv:''):'')}
+  try{var fq=/[?&]fast=([01])(?:&|$)/.exec(location.search);if(fq){if(fq[1]==='0')localStorage.setItem('hstFastOff','1');else localStorage.removeItem('hstFastOff')}}catch(x){}
   function relGet(k){if(!EXS[k]||!window.fetch)return Promise.resolve({ver:0});var ac=window.AbortController?new AbortController():null,tm=setTimeout(function(){try{ac&&ac.abort()}catch(x){}},9000);
     return fetch(EXS[k]+'?rel=1',{credentials:'omit',cache:'no-store',signal:ac?ac.signal:undefined}).then(function(r){return r.json()}).then(function(j){clearTimeout(tm);return {ver:+j.ver||0,pub:j.pub==='B'?'B':j.pub==='A'?'A':''}}).catch(function(){clearTimeout(tm);return {ver:0}})}
   function relPick(R){var pub=R.pub==='B'&&EXS.B?'B':'A',o=pub==='A'?'B':'A',k=pub;try{if(localStorage.getItem('hstPre')==='1'&&EXS[o]&&R[o].ver>R[pub].ver)k=o}catch(x){}return k}
@@ -221,7 +222,7 @@ fit();
   f.addEventListener('load',function(){if(!waitLive)setTimeout(hideSp,900)});
   /* only our own app frame may talk to this page (a page of another Apps Script cannot read the saved login) */
   function ownFrame(src){try{var w=src,fw=f.contentWindow;for(var i=0;i<5&&w;i++){if(w===fw)return true;if(w.parent===w)break;w=w.parent}}catch(x){}return false}
-  window.addEventListener('message',function(e){var h='';try{h=new URL(e.origin).hostname}catch(x){}if(!/\.googleusercontent\.com$/.test(h))return;if(!ownFrame(e.source))return;var d=e.data||{};
+  window.addEventListener('message',function(e){var h='';try{h=new URL(e.origin).hostname}catch(x){}if(!/\.googleusercontent\.com$/.test(h)&&e.origin!==location.origin)return;if(!ownFrame(e.source))return;var d=e.data||{};
     try{window.__isrc=e.source;window.__iori=e.origin;if(d.hst==='go-help'){var gk=d.k==='g'?'g':'v';try{e.source.postMessage({hst:'go-help-ok'},e.origin)}catch(x){}location.assign('/guide/#'+gk);return}if(d.hst==='go-ws'){var q=String(d.q||'ws');if(!/^ws(&sv=[A-Za-z0-9]{5,9})?$/.test(q))q='ws';try{e.source.postMessage({hst:'go-ws-ok'},e.origin)}catch(x){}location.assign(location.pathname+'?'+q);return}if((d.hst==='back-ok'||d.hst==='back-exit')&&window.__bkR){window.__bkR(d.hst);return}}catch(x){}
     try{if(d.hst==='pin-save'&&d.pin){localStorage.setItem('hstpin',String(d.pin));idbSync()}if(d.hst==='pin-clear'){localStorage.removeItem('hstpin');idbSync()}
     if(d.hst==='alive'){window.__alive=Date.now();window.__aliveOn=1;return}
