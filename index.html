@@ -219,7 +219,7 @@ fit();
   else{var u1=document.getElementById('upd');if(!u1.textContent){ldCap=true;u1.style.display='block';setSt()}}
   if(window.__drawSp)window.__drawSp();
   window.__goLive=hideSp;
-  f.addEventListener('load',function(){if(!waitLive)setTimeout(hideSp,900)});
+  f.addEventListener('load',function(){var fb=/\/app\/b\.html/.test(f.src||'');if(!waitLive||fb)setTimeout(hideSp,fb?250:900)});   /* v372: the phone copy (B) shows the saved board itself at once – no need to wait for the live numbers */
   /* only our own app frame may talk to this page (a page of another Apps Script cannot read the saved login) */
   function ownFrame(src){try{var w=src,fw=f.contentWindow;for(var i=0;i<5&&w;i++){if(w===fw)return true;if(w.parent===w)break;w=w.parent}}catch(x){}return false}
   window.addEventListener('message',function(e){var h='';try{h=new URL(e.origin).hostname}catch(x){}if(!/\.googleusercontent\.com$/.test(h)&&e.origin!==location.origin)return;if(!ownFrame(e.source))return;var d=e.data||{};
