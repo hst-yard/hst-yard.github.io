@@ -968,7 +968,7 @@ var CPEND=[];function rChat(){const L0=(D&&D.chat)||[];const L=L0.concat(CPEND.f
   let ls=0;try{ls=+(localStorage.getItem('hstChatSeen')||0)}catch(e){}if(S&&S.pin&&Date.now()-(window.CSSYNC||0)>9e4){window.CSSYNC=Date.now();call('getChatSeen',S.pin).then(x=>{x=+x||0;if(x>(window.CSEEN||0)){window.CSEEN=x;try{localStorage.setItem('hstChatSeen',x)}catch(e){}rChat()}}).catch(()=>{})}
   const seen=Math.max(ls,window.CSEEN||0),nw=(S&&S.pin)?L.filter(m=>new Date(m.Time).getTime()>seen&&m.By!==me&&!m.pend).length:0,onChat=!$('chat').classList.contains('hide');
   if(onChat&&L.length){const lt=new Date(L[L.length-1].Time).getTime();if(lt>seen){try{localStorage.setItem('hstChatSeen',lt)}catch(e){}window.CSEEN=lt;try{if(S&&S.pin)call('chatSeen',S.pin,lt).catch(()=>{})}catch(e){}}}
-  $('cbadge').textContent=nw;$('cbadge').classList.toggle('hide',onChat||!nw);}
+  $('cbadge').textContent=nw;$('cbadge').classList.toggle('hide',onChat||!nw);try{document.querySelectorAll('.tabs button[data-t=chat]').forEach(b=>b.classList.toggle('chGlow',!onChat&&!!nw))}catch(e){}}
 const RQ=/^\[re:([^|]*)\|([^|]*)\|([^\]]*)\]\s*/;let RP=null;
 const FQ=/^\[file:([^|]*)\|([^|]*)\|([^|]*)\|([^\]]*)\]\s*/;
 function fsz(n){n=+n||0;return n>=1048576?(n/1048576).toFixed(1)+' MB':Math.max(1,Math.round(n/1024))+' KB'}
@@ -1928,7 +1928,7 @@ function whoTx0(t){try{if(!t)return '';if(t.State==='RB'){const r=rbBy(t);return
 /* ===== v311: tap on a phone alert opens that truck ===== */
 var OPENP='';
 function openPend(){try{if(!OPENP||!(DA&&DA.trucks&&DA.trucks.length))return;const p=OPENP;OPENP='';if(DA.trucks.some(x=>x.Plate===p))openTruck(p)}catch(e){}}
-addEventListener('message',e=>{if(e.origin!=='https:\/\/hst-yard.github.io')return;const d=e.data||{};if(d.hst==='open'&&/^[A-Z0-9]{5,9}$/.test(String(d.p||''))){OPENP=String(d.p);openPend()}});
+addEventListener('message',e=>{if(e.origin!=='https:\/\/hst-yard.github.io')return;const d=e.data||{};if(d.hst==='open'&&String(d.p||'')==='CHATMSG'){chMsgGo();return}if(d.hst==='open'&&/^[A-Z0-9]{5,9}$/.test(String(d.p||''))){OPENP=String(d.p);openPend()}});
 setInterval(openPend,1500);
 try{if(window.top!==window)window.top.postMessage({hst:'need-open'},'https:\/\/hst-yard.github.io')}catch(e){}
 /* ===== v311: LOADED tag beside the plate, in every list ===== */
@@ -4677,6 +4677,36 @@ function cAtIns(){try{const el=$('ctext');if(!el)return;const p=el.selectionStar
 setInterval(function(){try{const t=document.getElementById('ctext');if(!t||document.getElementById('cAtB'))return;const b=document.createElement('button');b.type='button';b.id='cAtB';b.textContent='@';b.title='Mention someone – or @all for everyone';b.setAttribute('aria-label','Mention someone or everyone');b.onclick=cAtIns;t.parentNode.insertBefore(b,t)}catch(e){}},1000);
 setInterval(function(){try{const t=document.getElementById('ctext'),b=document.getElementById('cAtB');if(!t||!b)return;const ph=getComputedStyle(t).order==='-1';b.style.order=ph?'-1':'';if(ph){t.style.setProperty('flex','1 1 calc(100% - 50px)','important')}else if(t.style.flex){t.style.removeProperty('flex')}}catch(e){}},700);
 setInterval(function(){try{const r=document.getElementById('rvC'),ch=document.getElementById('chat');if(!r)return;const on=ch&&!ch.classList.contains('hide')&&ch.offsetParent!==null;r.style.display=on?'none':''}catch(e){}},600);   /* Ali 23 Nov 15:10: the App review button never covers Send in Team chat */</script>
+<script>/* v529 (Ali 24 Nov 00:12): top bar – Settings on the bar for the System Owner (phone + laptop); on the laptop the Operation Desk + Workshop Desk move up to the bar; icons evenly spaced on the right */
+(function(){try{
+function hdDk(){try{const h=document.querySelector('header.top');if(!h)return;let d=document.getElementById('hdDk');
+ if(!d){const f=h.querySelector('.bell');if(!f)return;f.insertAdjacentHTML('beforebegin','<span id="hdDk"><button type="button" data-k="op" onclick="deskGo(\'op\')">Operation Desk</button><button type="button" data-k="ws" onclick="deskGo(\'ws\')">Workshop Desk</button></span>');d=document.getElementById('hdDk')}
+ const lg=typeof S!=='undefined'&&S&&S.pin&&!window.VAS,ok={op:!!(lg&&xA('xod')),ws:!!(lg&&xA('xwd'))};
+ d.querySelectorAll('button').forEach(b=>{b.style.display=ok[b.dataset.k]?'':'none'});d.classList.toggle('none',!(ok.op||ok.ws));document.body.classList.toggle('hdDkOn',ok.op||ok.ws)}catch(e){}}
+hdDk();setInterval(hdDk,1500);
+document.head.insertAdjacentHTML('beforeend','<style>'+
+ 'header.top>.bell,header.top>#hdDk{margin-left:0!important}'+
+ 'header.top #ownB:not(.hide){display:flex!important}'+
+ '#hdDk{display:none;gap:6px;align-items:center;flex:none}'+
+ '#hdDk button{display:inline-flex;align-items:center;gap:6px;background:#2A322B;color:#fff;border:1px solid #3E4A40;border-radius:18px;padding:6px 13px;min-height:34px;font:600 13px Arial,sans-serif;cursor:pointer;white-space:nowrap}'+
+ '#hdDk button:hover{background:#067327;border-color:#067327}#hdDk i{font-style:normal}'+
+ '@media (min-width:701px){header.top>nav.tabs{margin-right:auto}header.top>.brand{flex:none}}'+
+ '@media (max-width:700px){header.top>.brand{margin-right:auto}header.top{gap:4px}header.top>.live{margin-left:4px}}'+
+ '@media (min-width:701px) and (max-width:900px){#clock small{display:none!important}header.top>.bell{padding:6px!important}header.top .tabs button{padding-left:7px!important;padding-right:7px!important}header.top{gap:6px!important}}'+
+ '@media (max-width:340px){header.top .logo{height:20px!important}header.top>.bell{padding:5px!important}header.top{gap:2px!important;padding:0 6px!important}}'+
+ '@media (min-width:1300px){#hdDk:not(.none){display:inline-flex}body.hdDkOn #deskBar{display:none!important}}'+
+ '</style>');
+}catch(e){}})();
+</script>
+<script>/* v528 (Ali 24 Nov 00:05): Team chat button glows softly while there are unread messages; a chat alert opens Team chat on the message */
+function chMsgGo(n){n=n||0;try{if(!(typeof S!=='undefined'&&S&&S.pin)||!document.querySelector('.tabs button[data-t=chat]')){if(n<20)setTimeout(()=>chMsgGo(n+1),700);return}
+ try{if(typeof opdX==='function')opdX()}catch(e){}try{const k=document.getElementById('km');if(k&&!k.classList.contains('hide')&&typeof closeK==='function')closeK()}catch(e){}
+ const b=document.querySelector('.tabs button[data-t=chat]');if(!b.classList.contains('on'))b.click();
+ setTimeout(()=>{try{const me=String(S.name||'').toLowerCase().replace(/[–-].*$/,'').trim().split(/\s+/)[0]||'',L=[...document.querySelectorAll('#cmsgs .cm')].reverse();
+  const m=L.find(x=>x.dataset.b!==S.name&&me&&(x.textContent.toLowerCase().indexOf('@'+me)>-1||x.textContent.toLowerCase().indexOf('@all')>-1))||L.find(x=>x.dataset.b!==S.name);
+  if(m){m.scrollIntoView({block:'center'});m.classList.add('cmHi');setTimeout(()=>m.classList.remove('cmHi'),4000)}}catch(e){}},900)}catch(e){}}
+document.head.insertAdjacentHTML('beforeend','<style>@keyframes chGlw{0%,100%{background-color:transparent;box-shadow:none}50%{background-color:rgba(6,115,39,.20);box-shadow:0 0 0 2px rgba(6,115,39,.55),0 0 14px rgba(6,115,39,.45)}}.tabs button.chGlow{animation:chGlw 1.8s ease-in-out infinite;border-radius:10px}@keyframes cmHiA{0%,100%{box-shadow:none}30%{box-shadow:0 0 0 3px rgba(6,115,39,.7)}}#cmsgs .cm.cmHi{animation:cmHiA 1.3s ease-in-out 3}@media (prefers-reduced-motion:reduce){.tabs button.chGlow{animation:none;background-color:rgba(6,115,39,.18);box-shadow:0 0 0 2px rgba(6,115,39,.55)}}</style>');
+</script>
 <script>/* v527 (Ali 23 Nov 22:00): Operation Desk in tabs – Now / Movement / Drivers / GPS off */
 (function(){try{
 OPD.tab='now';OPD.sec=OPD.sec||'ready';
