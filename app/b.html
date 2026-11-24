@@ -3052,7 +3052,7 @@ function qLists(){const T=((DA&&DA.trucks)||[]).filter(t=>!isHBM(t)||t.State==='
     nj:T.filter(t=>ydDn(t)&&!hasJC(t)&&!idleT(t)).sort((a,b)=>((workH(arrT(b))>=JCH)-(workH(arrT(a))>=JCH))||(workH(arrT(b))-workH(arrT(a)))||(new Date(arrT(a))-new Date(arrT(b)))),
     late:T.filter(t=>['ACC','MAJ','UR','PM'].includes(t.State)&&t.Location==='YARD'&&tgE(t)&&Date.now()>tgE(t)).sort((a,b)=>(LO(a)-LO(b))||(tgE(a)-tgE(b))),
     rd:T.filter(t=>t.State==='READY'&&!t.OpsAck).sort((a,b)=>hrs(b.ReadySince)-hrs(a.ReadySince)),mi:T.filter(t=>(['ACC','MAJ','UR','PM','RB'].includes(t.State)&&(!String(t.WaitingFor||'').trim()||(t.Location==='YARD'&&t.State!=='ACC'&&!String(t.Target||'').trim())))||(t.State==='WORK'&&t.Location==='YARD')).sort((a,b)=>hrs(b.LastGateAt||b.Since||b.UpdatedAt)-hrs(a.LastGateAt||a.Since||a.UpdatedAt)),pt:((DA&&DA.trucks)||[]).filter(t=>PTD.includes(t.State)&&ptOf(t.Plate).length).sort((a,b)=>ptH(b)-ptH(a)),fl:T.filter(t=>t.Repeat==='Y'||Number(t.RetN||0)>0).sort((a,b)=>hrs(b.Since)-hrs(a.Since))}}
-const QB=[['road','🚨','Road now','Road',()=>C.RB],['nj','📋','No job card','Card',()=>C.UR],['jcq','🗂','Job cards','Cards',()=>C.PM],['late','⏰','Late','Late',()=>C.MAJ],['rd','🟢','Ready – not confirmed','Ready',()=>C.READY],['mi','❓','Missing info – no status, no waiting-for or no expected finish','Missing',()=>'#6B46C1'],['fl','🚩','Office flags – repeat within 7 days / came back after Ready','Flags',()=>'#9B2C2C'],['sw','🔄','Swaps','Swaps',()=>'#B7791F']];
+const QB=[['road','🚨','Road now','Road',()=>C.RB],['nj','📋','No job card','No card',()=>C.UR],['jcq','🗂','Job cards','Cards',()=>C.PM],['late','⏰','Late','Late',()=>C.MAJ],['rd','🟢','Ready – not confirmed','Ready',()=>C.READY],['mi','❓','Missing info – no status, no waiting-for or no expected finish','Missing',()=>'#6B46C1'],['fl','🚩','Office flags – repeat within 7 days / came back after Ready','Flags',()=>'#9B2C2C'],['sw','🔄','Swaps','Swaps',()=>'#B7791F']];
 /* ===== v386 (Ali 21 Nov 08:45): job cards list (needs / not printed / printed), create from the list, share every list (WhatsApp + Team chat), truck type everywhere, Loaded filter, road clock 08–20, job card plan beside expected finish ===== */
 var JCST={},JCSTT=0,QLD={};
 function jcsLoad(f){try{if(!S||!S.pin||(!f&&Date.now()-JCSTT<6e4))return;JCSTT=Date.now();call('jcStat',S.pin).then(r=>{const m={};(r||[]).forEach(x=>{if(!x||!x.p)return;const o=m[x.p];if(!o||String(x.at)>=String(o.at))m[x.p]={no:x.no,at:x.at,by:x.by,pr:x.pr||(o&&o.no===x.no?o.pr:'')}});Object.keys(JCST).forEach(p=>{if(JCST[p].loc&&(!m[p]||m[p].no!==JCST[p].no||!m[p].pr))m[p]=JCST[p]});JCST=m}).catch(()=>{})}catch(e){}}
@@ -3111,7 +3111,7 @@ setInterval(jcPlanHint,1500);
 function qbInit(){try{const g=document.getElementById('gtB');let q=document.getElementById('qbtns');if(!g||!DA){if(q)q.style.display='none';return}
   if(!q){g.insertAdjacentHTML('afterend','<span id="qbtns"></span>');q=document.getElementById('qbtns')}if(q.previousElementSibling!==g)g.after(q);
   if((typeof limU==='function'&&limU())||(S&&S.role==='GATE')){q.style.display='none';return}q.style.display='';
-  const Q=qLists();Q.jcq=jcqList().filter(x=>x.s.k!=='pr');Q.sw=swAll();const QV=QB.filter(x=>(x[0]!=='jcq'||jcRole())&&(x[0]!=='sw'||Q.sw.length));q.classList.toggle('q6',QV.length>5);const h=QV.map(([k,ic,l,s,c])=>'<button class="qkb" style="--c:'+c()+'" onclick="qOpen(\''+k+'\')"><span class="qi">'+ic+'</span> <span class="ql">'+l+'</span><span class="qs">'+s+'</span> <b>'+Q[k].length+'</b></button>').join('');if(q.innerHTML!==h)q.innerHTML=h}catch(e){}}
+  const Q=qLists();Q.jcq=jcqList().filter(x=>x.s.k!=='pr');Q.sw=swAll();const QV=QB.filter(x=>x[0]!=='mi'&&x[0]!=='fl'&&(x[0]!=='jcq'||jcRole())&&(x[0]!=='sw'||Q.sw.length));q.classList.toggle('q6',QV.length>5);const h=QV.map(([k,ic,l,s,c])=>'<button class="qkb" style="--c:'+c()+'" onclick="qOpen(\''+k+'\')"><span class="qi">'+ic+'</span> <span class="ql">'+l+'</span><span class="qs">'+s+'</span> <b>'+Q[k].length+'</b></button>').join('');if(q.innerHTML!==h)q.innerHTML=h}catch(e){}}
 setInterval(qbInit,1500);
 
 /* v428 (Ali 21 Nov 18:42): every line – tick to send only some, WhatsApp / Team chat for one truck, Chase selected, expected finish on road trucks */
@@ -4682,7 +4682,7 @@ setInterval(function(){try{const r=document.getElementById('rvC'),ch=document.ge
 function hdDk(){try{const h=document.querySelector('header.top');if(!h)return;let d=document.getElementById('hdDk');
  if(!d){const f=h.querySelector('.bell');if(!f)return;f.insertAdjacentHTML('beforebegin','<span id="hdDk"><button type="button" data-k="op" onclick="deskGo(\'op\')">Operation Desk</button><button type="button" data-k="ws" onclick="deskGo(\'ws\')">Workshop Desk</button></span>');d=document.getElementById('hdDk')}
  const lg=typeof S!=='undefined'&&S&&S.pin&&!window.VAS,ok={op:!!(lg&&xA('xod')),ws:!!(lg&&xA('xwd'))};
- d.querySelectorAll('button').forEach(b=>{b.style.display=ok[b.dataset.k]?'':'none'});d.classList.toggle('none',!(ok.op||ok.ws));document.body.classList.toggle('hdDkOn',ok.op||ok.ws)}catch(e){}}
+ d.querySelectorAll('button').forEach(b=>{b.style.display=ok[b.dataset.k]?'':'none'});d.classList.toggle('none',!(ok.op||ok.ws));document.body.classList.toggle('hdDkOn',ok.op||ok.ws);h.classList.toggle('hdC',ok.op||ok.ws)}catch(e){}}
 hdDk();setInterval(hdDk,1500);
 document.head.insertAdjacentHTML('beforeend','<style>'+
  'header.top>.bell,header.top>#hdDk{margin-left:0!important}'+
@@ -4693,8 +4693,10 @@ document.head.insertAdjacentHTML('beforeend','<style>'+
  '@media (min-width:701px){header.top>nav.tabs{margin-right:auto}header.top>.brand{flex:none}}'+
  '@media (max-width:700px){header.top>.brand{margin-right:auto}header.top{gap:4px}header.top>.live{margin-left:4px}}'+
  '@media (min-width:701px) and (max-width:900px){#clock small{display:none!important}header.top>.bell{padding:6px!important}header.top .tabs button{padding-left:7px!important;padding-right:7px!important}header.top{gap:6px!important}}'+
- '@media (max-width:340px){header.top .logo{height:20px!important}header.top>.bell{padding:5px!important}header.top{gap:2px!important;padding:0 6px!important}}'+
- '@media (min-width:1300px){#hdDk:not(.none){display:inline-flex}body.hdDkOn #deskBar{display:none!important}}'+
+ 'header.top>.brand{flex:none!important}@media (max-width:700px){header.top .logo{height:24px!important;width:auto!important}header.top>.brand{gap:0!important}header.top>.brand>div{display:none!important}}@media (min-width:1300px) and (max-width:1499px){header.top.hdC #clock small{display:none!important}}'+
+ '@media (max-width:340px){#qbtns .qkb{padding-left:2px!important;padding-right:2px!important;letter-spacing:-.4px;font-size:11.5px!important;min-width:0!important}#qbtns .qkb b{margin-left:2px!important;font-size:10.5px!important;padding-left:4px!important;padding-right:4px!important;min-width:0!important}}'+
+ '@media (max-width:340px){header.top .logo{height:18px!important}header.top .live{gap:3px!important}#clock small{font-size:10px!important;letter-spacing:-.2px}#clock b{font-size:13.5px!important}header.top>.bell{padding:5px!important}header.top{gap:2px!important;padding:0 6px!important}}'+
+ '@media (min-width:1300px){#hdDk:not(.none){display:inline-flex}body.hdDkOn #deskBar .dk,body.hdDkOn #deskTg{display:none!important}}'+
  '</style>');
 }catch(e){}})();
 </script>
